@@ -7,32 +7,24 @@
 
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&amp;subset=latin-ext" rel="stylesheet">
+    <script src="js/jquery-3.2.1.min.js"></script>
 
-@yield('head')
+    @yield('head')
 
   </head>
   <body>
     <div class="container">
 
-        <div class="header">
-            <div class="logo">
-                <img src="images/pixelcar_logo.png" style="float:left;" alt="logo">
-                <div id="logo_text"><span style="color: #e98700; font-weight:700;">Car</span>log</div>
-                <div style="clear:both;"></div>
+        @include('includes.logo')
 
-            </div>
-        </div>
+        @include('includes.nav')
 
-        <div class="nav">
-            here will be navigation buttons
-        </div>
+        @yield('body')
 
-@yield('body')
+        @include('includes.footer')
+  </div>
 
-        <div class="footer">
-            here will be my footer
-        </div>
+        @include('includes.stickyjs')
 
-    </div>
   </body>
 </html>

@@ -31,17 +31,89 @@ body{
 }
 
 .nav{
+    width: 100%;
     background-color: #c97400;
-    min-height: 50px;
     text-align: center;
     padding: 10px 0;
     border-top: 1px solid #995800;
     border-bottom: 1px solid #995800;
+
 }
 
+ol{
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  font-size: 18px;
+  height: 35px;
+  line-height: 200%;
+  display: inline-block;
+}
+
+ol a{
+  text-decoration: none;
+  color: white;
+  display: block;
+}
+
+ol > li{
+  float: left;
+  width: 150px;
+  height: 40px;
+  border-right: 1px solid #a05d01;
+}
+
+ol > li:first-child{
+  border-left: 1px solid #a05d01;
+}
+
+ol > li:hover{
+  background-color: #c96400;
+}
+
+ol > li:hover > a{
+  color: #3f2400;
+}
+
+ol > li > ul{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 40px;
+  display: none;
+}
+
+ol > li:hover > ul{
+  display: block;
+}
+
+ol > li > ul > li{
+  background-color: #c96400;
+  position: relative;
+  z-index: 100;
+  border-top: 1px solid #a05d01;
+}
+
+ol > li > ul > li:hover{
+  background-color: #c97400;
+
+}
+
+ol > li > ul > li:hover > a{
+  color: #3f2400;
+
+}
 
 .footer{
     padding: 30px;
     background-color: #21242D;
     text-align: center;
+}
+
+.sticky{
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
 }

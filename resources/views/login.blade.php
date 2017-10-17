@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
 @section('head')
-    <link rel="stylesheet" type="text/css" href="css/index.css"/>
-@stop
+    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+@endsection
 
 @section('body')
 
@@ -117,4 +117,7 @@
                 <div class="clear:both;"></div>
             </form>
         </div>
-@stop
+
+
+        </body>
+@endsection
