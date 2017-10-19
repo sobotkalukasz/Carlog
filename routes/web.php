@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,8 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', 'CarlogController@login');
-
+Route::get('/Logout', 'CarlogController@logout');
 Route::post('/LoginFormValidation', 'LoginRegisterController@LoginFormValidation');
-
 Route::post('/RegisterFormValidation', 'LoginRegisterController@RegisterFormValidation');
 
 //Auth::routes();

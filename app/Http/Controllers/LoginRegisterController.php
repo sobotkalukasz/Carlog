@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
+use Redirect;
 
 class LoginRegisterController extends Controller
 {
+    /*
+    * This function validates data from login form and
+    * checks if email exists in database. Finally
+    * it uses $user->login() to retrieves an user object
+    * from database and passes values by session().
+    */
 
     public function LoginFormValidation (Request $request) {
+
       $formData = $request->all();
 
       //Validation rules
@@ -33,15 +43,20 @@ class LoginRegisterController extends Controller
         if($user->checkEmail($formData['login'])){
           if($user = $user->login($formData)){
 
-            //it destroys $formData
-            unset($formData);
+            Session::put('id', $user[0]['id']);
+            Session::put('name', $user[0]['name']);
+            Session::put('email', $user[0]['email']);
 
-            return $user[0]['name'];
+            //it destroys $formData and $user object
+            unset($formData, $user);
+
+            Redirect::to('/');
+
           }
-          
+
         }
 
-        //User doesn't exists
+        //User doesn't exist
         $formData['error_login'] = 'Podano niepoprawny login lub hasło.';
         return back()->with($formData);
       }
@@ -53,6 +68,13 @@ class LoginRegisterController extends Controller
     }
 
 
+    /*
+    * This function validates data from register form and
+    * checks if email exists in database. If email is unque it uses
+    * $user->saveUser() function to put new user into database.
+    * At the end it uses $user->login() to retrieves a new user object
+    * from database and passes values by session().
+    */
 
     public function RegisterFormValidation(Request $request) {
       $formData = $request->all();
@@ -65,10 +87,11 @@ class LoginRegisterController extends Controller
         'pass_confirmation' => 'required'
       ];
 
-      //Error messages
+      //Custom error messages
       $messages = [
         'name.required' => 'Imię jest wymagane',
         'name.min' => 'Imię jest za krótkie (min 3 znaki).',
+        'name.max' => 'Imię jest za długie (max 20 znaków).',
         'name.alpha' => 'Imię może sie składać tylko z liter.',
         'email.required' => 'Adres email jest wymagany.',
         'email.email' => 'Podano niepoprawny adres email.',
@@ -76,7 +99,7 @@ class LoginRegisterController extends Controller
         'pass.min' => 'Hasło jest za krótkie (min 6 znaków)',
         'pass.confirmed' => 'Podano różne hasła.',
         'pass_confirmation.required' => 'Hasło jest wymagane.'
-  ];
+      ];
 
 
       //Create a new validation instance.
@@ -85,7 +108,7 @@ class LoginRegisterController extends Controller
       //if validator passes
       if($validator->passes()) {
 
-        //it checks if 'email' is unique
+        //it checks if 'email' is unique in database
         $user = new \App\User;
         if($user->checkEmail($formData['email'])) {
 
@@ -94,26 +117,33 @@ class LoginRegisterController extends Controller
           return back()->with($formData);
         };
 
-        $pass_hash = $formData['pass'];
-        $formData['pass'] = password_hash($formData['pass'], PASSWORD_DEFAULT);
+        //it saves new user into database
+        if($user->saveUser($formData)){
+          $formData['login'] = $formData['email'];
+          $formData['password'] = $formData['pass'];
 
-        $user = new \App\User;
-        $user->name = $formData['name'];
-        $user->email = $formData['email'];
-        $user->password = $formData['pass'];
-        $user->save();
+          //after successfuly insertion it logs in new user
+          $user = new \App\User;
+          if($user = $user->login($formData)){
 
-        //it destroys $formData
-        unset($formData);
+            $message = 'Witaj nowy użytkowniku w moim serwisie.';
 
-        return "Data was saved";
+            Session::put('id', $user[0]['id']);
+            Session::put('name', $user[0]['name']);
+            Session::put('email', $user[0]['email']);
+            Session::put('message_new_user', $message);
 
+            //it destroys $user object
+            unset($user);
+
+            Redirect::to('/');
+          }
+        }
       }
 
       //if validator fails
       $error = $validator->messages();
       return back()->withErrors($validator)->with($formData);
-
     }
 
 }
