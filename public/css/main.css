@@ -48,6 +48,7 @@ ol{
   height: 35px;
   line-height: 200%;
   display: inline-block;
+  cursor: pointer;
 }
 
 ol a{

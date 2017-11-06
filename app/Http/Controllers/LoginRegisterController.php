@@ -123,7 +123,7 @@ class LoginRegisterController extends Controller
           $formData['password'] = $formData['pass'];
 
           //after successfuly insertion it logs in new user
-          $user = new \App\User;
+          //$user = new \App\User;
           if($user = $user->login($formData)){
 
             $message = 'Witaj nowy użytkowniku w moim serwisie.';
@@ -131,12 +131,13 @@ class LoginRegisterController extends Controller
             Session::put('id', $user[0]['id']);
             Session::put('name', $user[0]['name']);
             Session::put('email', $user[0]['email']);
-            Session::put('message_new_user', $message);
+            Session::put('message_for_user', $message);
 
             //it destroys $user object
             unset($user);
+            unset($user);
 
-            Redirect::to('/');
+            return Redirect::to('/');
           }
         }
       }

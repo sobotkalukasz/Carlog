@@ -14,10 +14,21 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
-Route::get('/', 'CarlogController@login');
+Route::get('/', 'CarlogController@home');
 Route::get('/Logout', 'CarlogController@logout');
+Route::get('/AddCar', 'CarlogController@AddCarView');
+Route::get('/EditCarById/{id}', 'CarlogController@EditCarView')->name('edit.car');
+Route::get('/DeleteCarById/{id}', 'CarController@DeleteCar')->name('delete.car');
+
+Route::get('/EditCarView', function() {
+  return view('add_edit_car');
+});
+
 Route::post('/LoginFormValidation', 'LoginRegisterController@LoginFormValidation');
 Route::post('/RegisterFormValidation', 'LoginRegisterController@RegisterFormValidation');
+
+Route::post('/AddEditCar', 'CarController@AddEditCar');
+Route::post('/SellCar', 'CarController@SellCar');
 
 //Auth::routes();
 

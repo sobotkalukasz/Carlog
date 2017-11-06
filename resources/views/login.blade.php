@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('head')
-    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/login.css') }}"/>
 @endsection
 
 @section('body')
@@ -10,7 +10,7 @@
         <div id="loginform">
             <h1>zaloguj sie do dziennika pojazdów</h1>
 
-          <form action="{{ url('LoginFormValidation') }}" method="post">
+            <form action="{{ url('LoginFormValidation') }}" method="post">
 
                 {{-- CSRF Token.---------------------}}
                 {{-- csrf_field() --}}
@@ -21,12 +21,14 @@
                   @endif
                   @if (session()->has('error_login'))
                     {{ session('error_login') }}
+                    @php Session::forget('error_login') @endphp
                   @endif
                 </div>
 
                 <input type="text" placeholder="Adres e-mail" class="loginput" name="login"
                 @if (session()->has('login'))
                     value="{{ session('login') }}"
+                    @php Session::forget('login') @endphp
                 @endif ><br>
 
                 <div id="loginerror">
@@ -65,6 +67,7 @@
                   @endif
                   @if (session()->has('error_register'))
                     {{ session('error_register') }}
+                    @php Session::forget('error_register') @endphp
                   @endif
                 </div>
 
@@ -74,6 +77,7 @@
                     <input type="text" placeholder="Imię" class="reginput" name="name"
                         @if (session()->has('name'))
                             value="{{ session('name') }}"
+                            @php Session::forget('name') @endphp
                         @endif >
                 </div>
 
@@ -81,6 +85,7 @@
                     <input type="text" placeholder="Adres e-mail" class="reginput" name="email"
                       @if (session()->has('email'))
                         value="{{ session('email') }}"
+                        @php Session::forget('email') @endphp
                       @endif >
                 </div>
 

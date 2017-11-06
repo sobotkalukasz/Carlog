@@ -3,9 +3,28 @@
 namespace App;
 
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Eloquent
+class User extends Model
 {
+
+  /*
+  * Enables softDeletes of Users in database
+  */
+  use SoftDeletes;
+
+  /*
+  * Eloquent Relationship
+  * User __has_many__ Car
+  */
+
+  public function cars(){
+
+    return $this->hasMany(Car::class);
+  }
+
+
 
   /*
   * It checks if email adress is unique in database
@@ -38,6 +57,11 @@ class User extends Eloquent
 
   }
 
+  public function getUserById($id){
+
+    return \App\User::whereId($id)->get();
+  }
+
 
   /*
   * It hashes the password and saves new user to database.
@@ -61,6 +85,17 @@ class User extends Eloquent
     return false;
 
   }
+
+
+  /*
+  * it returns all user cars (by users ID)
+  */
+  public function getCars($id){
+
+    return \App\User::find($id)->cars;
+  }
+
+
 
 
 }

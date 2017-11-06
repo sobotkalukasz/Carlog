@@ -1,8 +1,8 @@
 <div class="nav">
   <ol>
-    <li><a href="#">Strona główna</a></li>
-    <li><a href="#">Moje auta</a></li>
-    <li><a href="#">+ Nowy wpis</a>
+    <li>{{ Html::linkAction('CarlogController@home','Strona główna') }}</li>
+    <li>{{ Html::linkAction('CarlogController@AddCarView','Dodaj auto') }}</li>
+    <li>+ Nowy wpis
       <ul>
         <li><a href="#">Paliwo</a></li>
         <li><a href="#">Serwis</a></li>
