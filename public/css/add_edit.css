@@ -1,4 +1,4 @@
-#carform{
+.carform{
   width: 998px;
   margin-top: 75px;
   margin-bottom: 75px;
@@ -9,7 +9,7 @@
   border: 1px solid #c97400;
 }
 
-#carform > h1{
+.carform > h1{
     margin-left: 98px;
     text-align: left;
     text-transform: uppercase;
@@ -31,17 +31,37 @@
   font-weight: normal;
 }
 
+.left > h2{
+  float: left;
+}
+
 .carinput{
-  width: 450px;
   box-sizing: border-box;
   border: 2px solid #ddd;
   background-color: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
   border-radius: 5px;
   outline: none;
-  font-size: 20px;
   padding: 5px;
   padding-left: 10px;
   margin-top: 5px;
+}
+
+.big{
+  width: 450px;
+  font-size: 20px;
+}
+
+.small{
+  width: 240px;
+  height: 30px;
+  font-size: 16px;
+  float:right;
+}
+
+.smaller{
+  width: 200px;
 }
 
 .carinput:focus{
@@ -57,48 +77,38 @@
 }
 
 .radioFuel{
-  float: left;
-  margin-left: 25px;
+  float: right;
+  margin-left: 40px;
 }
 
-#datediv{
-  float:left;
-}
-
-#datediv > h2{
-  margin-top: 0;
-  margin-bottom: 0px;
-  font-size: 20px;
-  text-align: left;
-  font-weight: normal;
-}
-
-
-#datediv > input[type="date"] {
-  box-sizing: border-box;
-  border: 2px solid #ddd;
-  background-color: #ffffff;
+.select select{
+  float: right;
+  font-size: 16px;
+  height: 30px;
+  padding: 5px;
+  width: 240px;
+  border: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
   border-radius: 5px;
-  outline: none;
-  font-size: 18px;
-  padding: 3px;
-  padding-left: 10px;
-  margin-top: 5px;
-  float: left;
-  width: 250px;
+  background-color: white;
 }
 
-#datediv > input[type="date"]:focus {
+.select select:focus{
   border: 2px solid #c97400;
   background-color: #fce7cc;
   color: #c97400;
 }
 
-#pricediv{
-  float: right;
+.right{
+  float:right;
 }
 
-#pricediv > h2{
+.datediv{
+  float:left;
+}
+
+.datediv > h2{
   margin-top: 0;
   margin-bottom: 0px;
   font-size: 20px;
@@ -106,13 +116,64 @@
   font-weight: normal;
 }
 
-#pricediv > .errordivs{
+input[type="date"] {
+  box-sizing: border-box;
+  border: 2px solid #ddd;
+  background-color: #ffffff;
+  border-radius: 5px;
+  outline: none;
+  font-size: 16px;
+  padding: 3px;
+  padding-left: 10px;
+  margin-top: 5px;
+  width: 240px;
+  height: 30px;
+}
+
+ input[type="date"]:focus {
+  border: 2px solid #c97400;
+  background-color: #fce7cc;
+  color: #c97400;
+}
+
+.inputdivs > textarea{
+  display: block;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.calc{
+  float:right;
+  width: 40px;
+  padding-top: 7px;
+}
+
+.icon-calc:hover{
+  color: #c97400;
+  cursor: pointer;
+}
+
+.pricediv{
+  float: right;
+}
+
+.pricediv > h2{
+  margin-top: 0;
+  margin-bottom: 0px;
+  font-size: 20px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.pricediv > .errordivs{
   text-align: left;
   margin-left: 10px;
   color: #c60000;
 }
 
-#price {
+.price {
   width: 150px;
   box-sizing: border-box;
   border: 2px solid #ddd;
@@ -126,13 +187,13 @@
   float: right;
 }
 
-#price:focus{
+.price:focus{
   border: 2px solid #c97400;
   background-color: #fce7cc;
   color: #c97400;
 }
 
-#submitdiv{
+.submitdiv{
     width: 300px;
     float: left;
     margin-bottom: 50px;
@@ -140,7 +201,7 @@
     margin-top: 50px;
 }
 
-#submit{
+.submit{
     width: 300px;
     background-color: #c97400;
     font-size: 20px;
@@ -153,10 +214,26 @@
     color: #ffffff;
 }
 
-#submit:hover{
+.submit:hover{
     background-color: #c96400;
 }
 
-#submit:focus{
+.submit:focus{
     background-color: #c96400;
+}
+
+input[type="checkbox"]{
+  transform: scale(1.5);
+}
+
+input[type="text"]:disabled{
+  background-color: #dbdcdd;
+}
+
+input[type="date"]:disabled{
+  background-color: #dbdcdd;
+}
+
+textarea:disabled{
+  background-color: #dbdcdd;
 }

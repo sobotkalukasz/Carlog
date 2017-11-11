@@ -26,7 +26,48 @@ class Car extends Model
 
 
   /*
-  * it saves car in database
+  * Eloquent Relationship
+  * Car __has_many__ Fuel_expense
+  */
+  public function fuel_expenses(){
+
+    return $this->hasMany(Fuel_expense::class);
+  }
+
+
+  /*
+  * Eloquent Relationship
+  * Car __has_many__ Reminders
+  */
+  public function reminders(){
+
+    return $this->hasMany(Reminder::class);
+  }
+
+
+  /*
+  * Eloquent Relationship
+  * Car __has_many__ Expenses
+  */
+  public function expenses(){
+
+    return $this->hasMany(Expense::class);
+  }
+
+
+  /*
+  * Eloquent Relationship
+  * Car __has_many__ Services
+  */
+  public function services(){
+
+    return $this->hasMany(Service::class);
+  }
+
+
+
+  /*
+  * it saves car into database
   * if session had 'car_id' then it saves changes in existing car
   */
   public function saveCar($formData){

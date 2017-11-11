@@ -68,7 +68,7 @@
     @if ($past > 0)
       <h1>Samochody których nie jesteś już właścicielem</h1>
 
-      @for ($i = 0, $count = 0; $i <= $size; $i++, $count++)
+      @for ($i = 0, $count = 0; $i <= $size; $i++)
           @if ($i < $size && $cars[$i]->sale_date != NULL)
               <div class='cartile'>
                   <a href="{{ url('/StatsCar/'.$cars[$i]->id) }}" class="carlink">
@@ -86,6 +86,7 @@
                     </a>
                   </div>
               </div>
+              @php $count++ @endphp
           @endif
 
           @if ($count % 2 != 0)

@@ -19,6 +19,10 @@ Route::get('/Logout', 'CarlogController@logout');
 Route::get('/AddCar', 'CarlogController@AddCarView');
 Route::get('/EditCarById/{id}', 'CarlogController@EditCarView')->name('edit.car');
 Route::get('/DeleteCarById/{id}', 'CarController@DeleteCar')->name('delete.car');
+Route::get('/Fuel', 'CarlogController@FuelView');
+Route::get('/Reminder', 'CarlogController@ReminderView');
+Route::get('/Expense', 'CarlogController@ExpenseView');
+Route::get('/Service', 'CarlogController@ServiceView');
 
 Route::get('/EditCarView', function() {
   return view('add_edit_car');
@@ -29,6 +33,11 @@ Route::post('/RegisterFormValidation', 'LoginRegisterController@RegisterFormVali
 
 Route::post('/AddEditCar', 'CarController@AddEditCar');
 Route::post('/SellCar', 'CarController@SellCar');
+
+Route::post('/AddEditFuel', 'EntryController@AddEditFuel');
+Route::post('/AddEditReminder', 'EntryController@AddEditReminder');
+Route::post('/AddEditExpense', 'EntryController@AddEditExpense');
+Route::post('/AddEditService', 'EntryController@AddEditService');
 
 //Auth::routes();
 

@@ -47,11 +47,44 @@ class CarlogController extends Controller
 
         Session::put('car_id', $car_id);
         return Redirect::to('/EditCarView');
-
-
       }
 
       return Redirect::to('/');
+    }
+
+
+    public function FuelView () {
+
+      if (Session::has('id', 'name', 'email'))
+        return view('fuel');
+
+      return view('login');
+    }
+
+
+    public function ReminderView () {
+
+      if (Session::has('id', 'name', 'email'))
+        return view('reminder');
+
+      return view('login');
+    }
+
+
+    public function ExpenseView () {
+
+      if (Session::has('id', 'name', 'email'))
+        return view('expense');
+
+      return view('login');
+    }
+
+    public function ServiceView () {
+
+      if (Session::has('id', 'name', 'email'))
+        return view('service');
+
+      return view('login');
     }
 
 }

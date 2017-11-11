@@ -96,6 +96,13 @@ class User extends Model
   }
 
 
+  /*
+  * it returns only current user's cars (by users ID)
+  */
+  public function getCurrentCars($id){
+
+    return \App\User::find($id)->cars->where('sale_date', "=", NULL);
+  }
 
 
 }

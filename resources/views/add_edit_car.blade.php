@@ -2,7 +2,7 @@
 
 
 @section('head')
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/add_edit_car.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/add_edit.css') }}"/>
 @endsection
 
 
@@ -16,7 +16,7 @@
 
 @endphp
 
-<div id="carform">
+<div class="carform">
     <h1>
       @if(session()->has('car_id'))
           edycja pojazdu
@@ -36,7 +36,7 @@
 
       <div class="inputdivs">
         <h2>Marka pojazdu</h2>
-        <input type="text" placeholder="Marka pojazdu" class="carinput" name="make"
+        <input type="text" placeholder="Marka pojazdu" class="carinput big" name="make"
               @if (session()->has('make'))
                   value="{{ session('make') }}"
                   @php Session::forget('make') @endphp
@@ -57,7 +57,7 @@
 
       <div class="inputdivs">
         <h2>Model pojazdu</h2>
-          <input type="text" placeholder="Model pojazdu" class="carinput" name="model"
+          <input type="text" placeholder="Model pojazdu" class="carinput big" name="model"
               @if (session()->has('model'))
                   value="{{ session('model') }}"
                   @php Session::forget('model') @endphp
@@ -79,7 +79,7 @@
 
       <div class="inputdivs">
           <h2>Rok produkcji</h2>
-          <input type="text" placeholder="Rok produkcji" class="carinput" name="production_year"
+          <input type="text" placeholder="Rok produkcji" class="carinput big" name="production_year"
               @if (session()->has('production_year'))
                   value="{{ session('production_year') }}"
                   @php Session::forget('production_year') @endphp
@@ -100,7 +100,7 @@
 
       <div class="inputdivs">
         <h2>Wersja silnikowa</h2>
-          <input type="text" placeholder="Wersja silnikowa" class="carinput" name="engine"
+          <input type="text" placeholder="Wersja silnikowa" class="carinput big" name="engine"
               @if (session()->has('engine'))
                   value="{{ session('engine') }}"
                   @php Session::forget('engine') @endphp
@@ -122,7 +122,7 @@
 
       <div class="inputdivs">
         <h2>Moc silnika [KM]</h2>
-          <input type="text" placeholder="Moc silnika [KM]" class="carinput" name="hp"
+          <input type="text" placeholder="Moc silnika [KM]" class="carinput big" name="hp"
               @if (session()->has('hp'))
                   value="{{ session('hp') }}"
                   @php Session::forget('hp') @endphp
@@ -142,7 +142,7 @@
 
       <div class="inputdivs">
         <h2>Przebieg pojazdu - początkowy [km]</h2>
-          <input type="text" placeholder="Przebieg pojazdu [km]" class="carinput" name="mileage_start"
+          <input type="text" placeholder="Przebieg pojazdu [km]" class="carinput big" name="mileage_start"
               @if (session()->has('mileage_start'))
                   value="{{ session('mileage_start') }}"
                   @php Session::forget('mileage_start') @endphp
@@ -162,7 +162,7 @@
 
       <div class="inputdivs">
         <h2>Przebieg pojazdu - aktualny [km]</h2>
-          <input type="text" placeholder="Przebieg pojazdu [km]" class="carinput" name="mileage_current"
+          <input type="text" placeholder="Przebieg pojazdu [km]" class="carinput big" name="mileage_current"
               @if (session()->has('mileage_current'))
                   value="{{ session('mileage_current') }}"
                   @php Session::forget('mileage_current') @endphp
@@ -185,11 +185,11 @@
         <h2 style="float:left;">Rodzaj paliwa</h2>
 
         <div class="radioFuel">
-          <lable><input type="radio" name="fuel" value="PB"
-            @if(session()->has('car_id') && $car[0]->fuel == 'PB')
+          <lable><input type="radio" name="fuel" value="LPG"
+            @if(session()->has('car_id') && $car[0]->fuel == 'LPG')
             checked
             @endif
-            ><span>PB</span></lable>
+            ><span>LPG</span></lable>
         </div>
 
         <div class="radioFuel">
@@ -201,11 +201,11 @@
         </div>
 
         <div class="radioFuel">
-          <lable><input type="radio" name="fuel" value="LPG"
-            @if(session()->has('car_id') && $car[0]->fuel == 'LPG')
+          <lable><input type="radio" name="fuel" value="PB"
+            @if(session()->has('car_id') && $car[0]->fuel == 'PB')
             checked
             @endif
-            ><span>LPG</span></lable>
+            ><span>PB</span></lable>
         </div>
 
         <div style="clear:both;"></div>
@@ -218,7 +218,7 @@
 
       <div class="inputdivs">
 
-            <div id="datediv">
+            <div class="datediv">
                 <h2>Data zakupu</h2>
                 <input type="date" name="purchase_date"
                 @if (session()->has('purchase_date'))
@@ -229,9 +229,9 @@
                 @endif >
             </div>
 
-            <div id="pricediv">
+            <div class="pricediv">
                 <h2>Cena zakupu [zł]</h2>
-                <input type="text" placeholder="Cena [zł]" id="price" name="purchase_price"
+                <input type="text" placeholder="Cena [zł]" class="price" name="purchase_price"
                     @if (session()->has('purchase_price'))
                         value="{{ session('purchase_price') }}"
                         @php Session::forget('purchase_price') @endphp
@@ -259,8 +259,8 @@
 
       {{-- Submit button --}}
 
-      <div id="submitdiv">
-          <input type="submit" id="submit"
+      <div class="submitdiv">
+          <input type="submit" class="submit"
               @if(session()->has('car_id'))
                 value="zapisz zmiany"
               @else
@@ -288,7 +288,7 @@
 
             <div class="inputdivs">
 
-                  <div id="datediv">
+                  <div class="datediv">
                       <h2>Data sprzedaży</h2>
                       <input type="date" name="sale_date"
                       @if (session()->has('sale_date'))
@@ -299,9 +299,9 @@
                       @endif >
                   </div>
 
-                  <div id="pricediv">
+                  <div class="pricediv">
                       <h2>Cena sprzedaży [zł]</h2>
-                      <input type="text" placeholder="Cena [zł]" id="price" name="sale_price"
+                      <input type="text" placeholder="Cena [zł]" class="price" name="sale_price"
                           @if (session()->has('sale_price'))
                               value="{{ session('sale_price') }}"
                               @php Session::forget('sale_price') @endphp
@@ -330,7 +330,7 @@
 
             <div class="inputdivs">
               <h2>Przebieg pojazdu [km]</h2>
-                <input type="text" placeholder="Przebieg pojazdu [km]" class="carinput" name="mileage_current2"
+                <input type="text" placeholder="Przebieg pojazdu [km]" class="carinput big" name="mileage_current2"
                     @if (session()->has('mileage_current2'))
                         value="{{ session('mileage_current2') }}"
                         @php Session::forget('mileage_current2') @endphp
@@ -348,8 +348,8 @@
 
             {{-- Submit button --}}
 
-            <div id="submitdiv">
-                <input type="submit" id="submit"
+            <div class="submitdiv">
+                <input type="submit" class="submit"
                     @if($car[0]->sale_price)
                       value="zapisz zmiany"
                     @else
