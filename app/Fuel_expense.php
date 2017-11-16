@@ -33,12 +33,13 @@ class Fuel_expense extends Model
   */
   public function savefuel($formData){
 
-    if ($formData['fuel_id']){
+    if (isset($formData['fuel_id'])){
       $fuel = \App\Fuel_expense::find($formData['fuel_id']);
       $distance = $fuel->distance;
       $price = $fuel->price_all;
       $litres = $fuel->litres;
-    }else{
+    }
+    else{
       $fuel = new \App\Fuel_expense;
       $fuel->car_id = $formData['car_id'];
     }
@@ -56,7 +57,7 @@ class Fuel_expense extends Model
 
       $car = \App\Car::find($formData['car_id']);
 
-      if ($formData['fuel_id'])
+      if (isset($formData['fuel_id']))
         if ($distance != $formData['distance'])
           $fuel_mileage = $car->fuel_mileage + ($formData['distance'] - $distance);
         else
@@ -66,7 +67,7 @@ class Fuel_expense extends Model
       }
 
 
-      if ($formData['fuel_id'])
+      if (isset($formData['fuel_id']))
         if ($litres != $formData['litres'])
           $fuel_total = $car->fuel_total + ($formData['litres'] - $litres);
         else
@@ -76,7 +77,7 @@ class Fuel_expense extends Model
       }
 
 
-      if ($formData['fuel_id']){
+      if (isset($formData['fuel_id'])){
           if ($price != $formData['price_all']){
           $spendings_fuel = $car->spendings_fuel + ($formData['price_all'] - $price);
         }

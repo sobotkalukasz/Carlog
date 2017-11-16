@@ -11,17 +11,37 @@
   @php
     $user = new \App\User;
     $cars = $user->getCars(session('id'))->toArray();
+
+    if(session()->has('service_id')){
+      $service = \App\Service::whereId(session('service_id'))->get()->toArray();
+      //return var_dump($service);
+    };
   @endphp
 
   <div class="carform">
 
-    <h1>dodaj nowy wydatek serwisowy</h1>
+    <h1>
+      @if(session()->has('service_id'))
+        edycja wpisu serwisowego
+      @else
+        dodaj nowy wydatek serwisowy
+      @endif
+    </h1>
 
     <form name="service" action="{{ url('AddEditService') }}" method="post"
       onsubmit="return formValidator()">
 
       {{-- CSRF Token.---------------------}}
       {!! csrf_field() !!}
+
+
+
+      {{-- If editing existing fuel entry it creates hidden input field with it id --}}
+
+      @if(session()->has('service_id'))
+        <input type="hidden" name="service_id" value="{{ session('service_id') }}">
+      @endif
+
 
 
 
@@ -34,7 +54,11 @@
               <select id="car_id" name="car_id">
                 @for ($i=0; $i < sizeof($cars); $i++)
                     @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}">{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
+                        <option value ="{{ $cars[$i]['id'] }}"
+                          @if (session()->has('service_id') && ($cars[$i]['id'] == $service[0]['car_id']))
+                            selected
+                          @endif
+                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
                     @endif
                 @endfor
               </select>
@@ -53,6 +77,8 @@
                     @if (session()->has('service_date'))
                         value="{{ session('service_date') }}"
                         @php Session::forget('service_date') @endphp
+                    @elseif (session()->has('service_id') && $service[0]['date'])
+                        value="{{ $service[0]['date'] }}"
                     @endif >
                 </div>
 
@@ -76,6 +102,8 @@
                   @if (session()->has('service_mileage'))
                       value="{{ session('service_mileage') }}"
                       @php Session::forget('service_mileage') @endphp
+                  @elseif (session()->has('service_id') && $service[0]['mileage'])
+                      value="{{ $service[0]['mileage'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -97,6 +125,8 @@
                   @if (session()->has('service_description'))
                       value="{{ session('service_description') }}"
                       @php Session::forget('service_description') @endphp
+                  @elseif (session()->has('service_id') && $service[0]['description'])
+                      value="{{ $service[0]['description'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -117,6 +147,8 @@
                   @if (session()->has('service_price_parts'))
                       value="{{ session('service_price_parts') }}"
                       @php Session::forget('service_price_parts') @endphp
+                  @elseif (session()->has('service_id') && $service[0]['price_parts'])
+                      value="{{ $service[0]['price_parts'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -137,6 +169,8 @@
                   @if (session()->has('service_price_labour'))
                       value="{{ session('service_price_labour') }}"
                       @php Session::forget('service_price_labour') @endphp
+                  @elseif (session()->has('service_id') && $service[0]['price_labour'])
+                      value="{{ $service[0]['price_labour'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -157,6 +191,8 @@
                   @if (session()->has('service_price_total'))
                       value="{{ session('service_price_total') }}"
                       @php Session::forget('service_price_total') @endphp
+                  @elseif (session()->has('service_id') && $service[0]['price_total'])
+                      value="{{ $service[0]['price_total'] }}"
                   @endif >
               <div class="calc"><i onclick="calculate()"class="icon-calc"></i></div>
               <div style="clear:both;"></div>
@@ -174,9 +210,21 @@
 
           <div class="inputdivs">
             <h2>Uwagi</h2>
-            <textarea placeholder="Pole opcjonalne" name="service_comment"
+            <textarea id="service_comment" placeholder="Pole opcjonalne" name="service_comment"
                 rows="5" class="carinput"></textarea>
           </div>
+
+          {{-- hidden input for JQuery function --}}
+
+          <input type="hidden" id="text1"
+          @if (session()->has('service_comment'))
+              {{  'value=1' }}
+          @elseif (session()->has('service_id') && $service[0]['comment'])
+              {{  'value=1' }}
+              @php session()->put('service_comment', $service[0]['comment']); @endphp
+          @endif>
+
+
 
           @if($errors->has('service_comment'))
             <div class="errordivs">
@@ -253,6 +301,14 @@
                   rows="5" class="carinput"></textarea>
             </div>
 
+            {{-- hidden input for JQuery function --}}
+
+            <input type="hidden" id="text2"
+            @if (session()->has('reminder_comment'))
+                {{  'value=1' }}
+            @endif>
+
+
             @if($errors->has('reminder_comment'))
               <div class="errordivs">
                 {{ $errors->first('reminder_comment') . PHP_EOL }}
@@ -266,6 +322,13 @@
           <div class="submitdiv">
               <input type="submit" class="submit" id="sub" value="">
           </div>
+
+
+          {{-- Deletes service_id from session() --}}
+
+          @if(session()->has('service_id'))
+            @php session()->forget('service_id') @endphp
+          @endif
 
 
         <div style="clear:both;"></div>
@@ -344,6 +407,31 @@
             }
           }
         }
+
+
+        //if value == 1 it fills #service_comment and unset session value
+
+        if($("#text1").val() == 1){
+          var text = <?php echo json_encode(session('service_comment')); ?>;
+          var field = '#service_comment';
+          $(field).val(text);
+          <?php Session::forget('service_comment') ?>;
+        }
+
+
+        //if value == 1 it fills #r_comment and unset session value
+
+        if($("#text2").val() == 1){
+          var text = <?php echo json_encode(session('reminder_comment')); ?>;
+          var field = '#r_comment';
+          $(field).val(text);
+          <?php Session::forget('reminder_comment') ?>;
+        }
+
+
+
+
+
 
 
     </script>

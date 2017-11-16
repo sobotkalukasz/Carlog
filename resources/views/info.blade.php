@@ -500,12 +500,12 @@
                 <div class="eServicePrice left">{{ $service[$i]['price_total'] }} zł</div>
                 <div class="eEdit left">
                   <div class="edit">
-                    <a href="" data-tooltip="Edituj wpis" class="careditlink">
+                    <a href="{{ route('edit.service', $service[$i]['id']) }}" data-tooltip="Edytuj wpis" class="careditlink">
                       <i class="icon-pencil"></i>
                     </a>
                   </div>
                   <div class="edit">
-                    <a href="" data-tooltip="Usiń wpis" class="careditlink"
+                    <a href="{{ route('delete.service', $service[$i]['id']) }}" data-tooltip="Usiń wpis" class="careditlink"
                       onclick="return confirm('Jesteś pewien, że chcesz usunąć ten wpis');">
                       <i class="icon-trash-empty"></i>
                     </a>

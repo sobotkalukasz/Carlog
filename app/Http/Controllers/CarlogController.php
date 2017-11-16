@@ -114,13 +114,26 @@ class CarlogController extends Controller
 
 
 
-
     public function EditFuelView ($fuel_id) {
 
       if (Session::has('id', 'name', 'email')){
 
         Session::put('fuel_id', $fuel_id);
         return Redirect::to('/EditFuelView');
+      }
+
+      return Redirect::to('/');
+    }
+
+
+
+
+    public function EditServiceView ($service_id) {
+
+      if (Session::has('id', 'name', 'email')){
+
+        Session::put('service_id', $service_id);
+        return Redirect::to('/EditServiceView');
       }
 
       return Redirect::to('/');

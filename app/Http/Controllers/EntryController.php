@@ -337,6 +337,8 @@ class EntryController extends Controller
   }
 
 
+
+
   public function DeleteFuel($fuel_id) {
 
     if (Session::has('id', 'name', 'email')){
@@ -365,11 +367,46 @@ class EntryController extends Controller
 
       unset($fuel);
       unset($car);
-      
+
       return Redirect::to('/');
 
     }
     return Redirect::to('/');
+  }
+
+
+
+  public function DeleteService($service_id) {
+
+    if (Session::has('id', 'name', 'email')){
+
+      $service = \App\Service::find($service_id);
+      $car = \App\Car::find($service->car_id);
+
+
+      $car->spendings_service = $car->spendings_service - $service->price_total;
+
+
+
+      if($car->save()){
+
+        unset($sercie);
+        unset($car);
+
+        \App\Service::destroy($service_id);
+
+        return Redirect::to('/');
+      }
+
+      unset($service);
+      unset($car);
+
+      return Redirect::to('/');
+
+    }
+    return Redirect::to('/');
+
+
   }
 
 

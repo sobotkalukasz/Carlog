@@ -16,19 +16,24 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::get('/', 'CarlogController@home');
 Route::get('/Logout', 'CarlogController@logout');
-Route::get('/AddCar', 'CarlogController@AddCarView');
 
+Route::get('/AddCar', 'CarlogController@AddCarView');
 Route::get('/EditCarById/{id}', 'CarlogController@EditCarView')->name('edit.car');
 Route::get('/DeleteCarById/{id}', 'CarController@DeleteCar')->name('delete.car');
 Route::get('/InfoCarById/{id}', 'CarlogController@InfoCarView')->name('info.car');
 
+Route::get('/Fuel', 'CarlogController@FuelView');
 Route::get('/EditFuelById/{id}', 'CarlogController@EditFuelView')->name('edit.fuel');
 Route::get('/DeleteFuelById/{id}', 'EntryController@DeleteFuel')->name('delete.fuel');
 
-Route::get('/Fuel', 'CarlogController@FuelView');
+Route::get('/Service', 'CarlogController@ServiceView');
+Route::get('/EditServiceById/{id}', 'CarlogController@EditServiceView')->name('edit.service');
+Route::get('/DeleteServiceById/{id}', 'EntryController@DeleteService')->name('delete.service');
+
 Route::get('/Reminder', 'CarlogController@ReminderView');
 Route::get('/Expense', 'CarlogController@ExpenseView');
-Route::get('/Service', 'CarlogController@ServiceView');
+
+
 
 Route::get('/EditCarView', function() {
   return view('add_edit_car');
@@ -41,6 +46,11 @@ Route::get('/InfoCarView', function() {
 Route::get('/EditFuelView', function() {
   return view('fuel');
 });
+
+Route::get('/EditServiceView', function() {
+  return view('service');
+});
+
 
 Route::post('/LoginFormValidation', 'LoginRegisterController@LoginFormValidation');
 Route::post('/RegisterFormValidation', 'LoginRegisterController@RegisterFormValidation');

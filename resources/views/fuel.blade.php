@@ -111,7 +111,7 @@
                         value="{{ session('date') }}"
                         @php Session::forget('date') @endphp
                     @elseif (session()->has('fuel_id') && $fuel[0]['date'])
-                      value="{{ $fuel[0]['date'] }}"
+                        value="{{ $fuel[0]['date'] }}"
                     @endif >
                 </div>
 
