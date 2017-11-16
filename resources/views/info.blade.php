@@ -3,7 +3,6 @@
 
 @section('head')
   <link rel="stylesheet" type="text/css" href="{{ asset('css/info.css') }}"/>
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/tooltip.css') }}"/>
 @stop
 
 

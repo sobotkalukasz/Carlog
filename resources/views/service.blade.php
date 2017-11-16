@@ -11,7 +11,6 @@
   @php
     $user = new \App\User;
     $cars = $user->getCars(session('id'))->toArray();
-
   @endphp
 
   <div class="carform">

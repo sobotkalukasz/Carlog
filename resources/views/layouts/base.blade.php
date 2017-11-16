@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/fontello.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/tooltip.css') }}"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&amp;subset=latin-ext" rel="stylesheet">
     <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
 
