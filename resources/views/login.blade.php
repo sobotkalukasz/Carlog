@@ -15,7 +15,7 @@
                 {{-- CSRF Token.---------------------}}
                 {{-- csrf_field() --}}
 
-                <div id="loginerror">
+                <div class="loginerror">
                   @if($errors->has('login'))
                     {{ $errors->first('login') }}
                   @endif
@@ -31,15 +31,15 @@
                     @php Session::forget('login') @endphp
                 @endif ><br>
 
-                <div id="loginerror">
+                <div class="loginerror">
                   @if($errors->has('password'))
                     {{ $errors->first('password') }}
                   @endif
                 </div>
 
                 <input type="password" placeholder="Hasło" class="loginput" name="password"><br>
-                <div class="logsubmitdiv">
-                    <input type="submit" id="logsubmit" value="Zaloguj">
+                <div class="submitdiv">
+                    <input type="submit" class="log" value="Zaloguj">
                 </div>
                 <div class="clear:both;"></div>
 
@@ -55,11 +55,13 @@
                 {{-- csrf_field() --}}
 
                 {{-- Error divs --}}
-                <div class="regerrordivs">
-                  @if($errors->has('name'))
+
+                @if($errors->has('name'))
+                  <div class="regerrordivs">
                     {{ $errors->first('name') }}
-                  @endif
-                </div>
+                  </div>
+                @endif
+
 
                 <div class="regerrordivs">
                   @if($errors->has('email'))
@@ -93,11 +95,12 @@
 
                 {{-- Error divs --}}
 
-                <div class="regerrordivs">
-                  @if($errors->has('pass'))
+                @if($errors->has('pass'))
+                  <div class="regerrordivs">
                     {{ $errors->first('pass') }}
-                  @endif
-                </div>
+                  </div>
+                @endif
+
 
                 <div class="regerrordivs"></div>
 
@@ -115,8 +118,8 @@
                 <div style="clear:both;"></div>
 
 
-                <div class="regsubmitdiv">
-                    <input type="submit" id="regsubmit" value="Załóż nowe konto">
+                <div class="submitdiv">
+                    <input type="submit" class="reg" value="Załóż nowe konto">
                 </div>
 
                 <div class="clear:both;"></div>

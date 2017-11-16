@@ -8,8 +8,10 @@
 
 	   if (scrollTop > stickyNavTop) {
 	      $('.nav').addClass('sticky');
+				$('.container').css('padding-top', '50px');
 	   } else {
 	      $('.nav').removeClass('sticky');
+				$('.container').css('padding-top', 0);
 	    }
 	   };
 

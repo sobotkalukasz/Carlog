@@ -3,6 +3,7 @@
 
 @section('head')
   <link rel="stylesheet" type="text/css" href="{{ asset('css/home.css') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/tooltip.css') }}"/>
 @stop
 
 
@@ -25,16 +26,16 @@
     @for ($i = 0, $count = 0; $i <= $size; $i++)
         @if ($i < $size && $cars[$i]->sale_date === NULL)
             <div class='cartile'>
-                <a href="{{ url('/StatsCar/'.$cars[$i]->id) }}" class="carlink">
+                <a href="{{ route('info.car', $cars[$i]->id) }}" class="carlink">
                     {{ $cars[$i]->make . ' ' . $cars[$i]->model }}
                 </a>
                 <div class='edit'>
-                    <a href="{{ route('edit.car', $cars[$i]->id) }}" class="careditlink">
+                    <a href="{{ route('edit.car', $cars[$i]->id) }}" data-tooltip="Edytuj samochód" class="careditlink">
                       <i class="icon-pencil-squared"></i>
                     </a>
                 </div>
                 <div class='delete'>
-                    <a href="{{ route('delete.car', $cars[$i]->id) }}" class="careditlink"
+                    <a href="{{ route('delete.car', $cars[$i]->id) }}" data-tooltip="Usuń samochód" class="careditlink"
                       onclick="return confirm('Jesteś pewien, że chcesz usunąć ten samochód?');">
                       <i class="icon-trash"></i>
                     </a>
@@ -71,16 +72,16 @@
       @for ($i = 0, $count = 0; $i <= $size; $i++)
           @if ($i < $size && $cars[$i]->sale_date != NULL)
               <div class='cartile'>
-                  <a href="{{ url('/StatsCar/'.$cars[$i]->id) }}" class="carlink">
+                  <a href="{{ route('info.car', $cars[$i]->id) }}" class="carlink">
                       {{ $cars[$i]->make . ' ' . $cars[$i]->model }}
                   </a>
                   <div class='edit'>
-                      <a href="{{ route('edit.car', $cars[$i]->id) }}" class="careditlink">
+                      <a href="{{ route('edit.car', $cars[$i]->id) }}" data-tooltip="Edytuj samochód" class="careditlink">
                         <i class="icon-pencil-squared"></i>
                       </a>
                   </div>
                   <div class='delete'>
-                    <a href="{{ route('delete.car', $cars[$i]->id) }}" class="careditlink"
+                    <a href="{{ route('delete.car', $cars[$i]->id) }}" data-tooltip="Usuń samochód" class="careditlink"
                       onclick="return confirm('Jesteś pewien, że chcesz usunąć ten samochód?');">
                       <i class="icon-trash"></i>
                     </a>

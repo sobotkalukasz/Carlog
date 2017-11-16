@@ -9,11 +9,12 @@
     border: 1px solid #c97400;
 }
 
-#loginform > h1{
+h1{
     margin-left: 98px;
     text-align: left;
     text-transform: uppercase;
-    font-size: 30px
+    font-size: 30px;
+    letter-spacing: 2px;
 }
 
 .loginput{
@@ -27,7 +28,7 @@
     padding: 10px;
 }
 
-#loginerror{
+.loginerror{
   width: 800px;
   height: 40px;
   color: #c60000;
@@ -42,33 +43,13 @@
     color: #c97400;
 }
 
-.logsubmitdiv{
+.submitdiv{
     width: 300px;
     float: right;
     margin-right: 98px;
     margin-top: 50px;
 }
 
-#logsubmit{
-    width: 300px;
-    background-color: #c97400;
-    font-size: 20px;
-    padding: 15px 10px;
-    letter-spacing: 2px;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    border-radius: 5px;
-    color: #ffffff;
-}
-
-#logsubmit:hover{
-    background-color: #c96400;
-}
-
-#logsubmit:focus{
-    background-color: #c96400;
-}
 
 #registerform{
     width: 1000px;
@@ -79,12 +60,6 @@
     margin-right: auto;
 }
 
-#registerform > h1{
-    margin-left: 98px;
-    text-align: left;
-    text-transform: uppercase;
-    font-size: 30px
-}
 
 .reginputdivs{
     float: left;
@@ -108,16 +83,9 @@
     color: #c97400;
 }
 
-.regsubmitdiv{
-    float: right;
-    width: 300px;
-    margin-right: 100px;
-    margin-top: 50px;
-}
 
-#regsubmit{
+input[type="submit"]{
     width: 300px;
-    background-color: #282c35;
     font-size: 20px;
     padding: 15px 10px;
     letter-spacing: 2px;
@@ -126,13 +94,29 @@
     outline: none;
     border-radius: 5px;
     color: #ffffff;
+    transition: all .1s ease-in-out;
+}
+.log{
+  background-color: #c97400;
 }
 
-#regsubmit:hover{
+.log:hover{
+    background-color: #c96400;
+}
+
+.log:focus{
+    background-color: #c96400;
+}
+
+.reg{
+  background-color: #282c35;
+}
+
+.reg:hover{
     background-color: #222222;
 }
 
-#regsubmit:focus{
+.reg:focus{
     background-color: #222222;
 }
 

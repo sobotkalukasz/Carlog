@@ -104,7 +104,7 @@
               @if (session()->has('engine'))
                   value="{{ session('engine') }}"
                   @php Session::forget('engine') @endphp
-                  @elseif (session()->has('car_id') && $car[0]->engine)
+              @elseif (session()->has('car_id') && ($car[0]->engine))
                     value="{{ $car[0]->engine }}"
               @endif >
       </div>

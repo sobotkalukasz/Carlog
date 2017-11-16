@@ -1,0 +1,164 @@
+#carsection{
+  width: 1000px;
+  margin: 75px auto 75px auto;
+
+}
+
+.carinfo{
+}
+
+#columnOne{
+  min-height: 280px;
+}
+
+.info{
+    background-color: #c97400;
+    width: 43%;
+    padding: 20px;
+    float: left;
+    margin: 20px 15px 20px 15px;
+    border-radius: 5px;
+}
+
+table{
+  width: 100%;
+  border-collapse:collapse;
+  margin-bottom: 30px;
+}
+
+th{
+  border-bottom: 1px solid white;
+}
+
+h1{
+  letter-spacing: 3px;
+  margin-left: 15px;
+}
+
+.last{
+  border-radius: 0 0 5px 5px;
+}
+
+.button{
+  float: right;
+}
+
+.title{
+  border-radius: 5px 5px 0 0;
+  min-height: 35px;
+  background-color: #00C974;
+  color: #21242D;
+  padding-top: 3px;
+}
+
+.title:first-child{
+  padding-left: 10px;
+  border-bottom: 1px solid white;
+}
+
+.entry{
+  background-color: #c96900;
+  min-height: 25px;
+  font-size: 16px;
+  padding-top: 5px;
+  padding-left: 5px
+}
+
+.entry:nth-child(even){
+  background-color: #c97400;
+}
+
+.entry:hover{
+  background-color: white;
+  color: black;
+}
+
+.left{
+  float: left;
+}
+
+.eDate{
+  width: 15%;
+  min-height: 25px;
+}
+
+.eMileage{
+  width: 15%;
+  min-height: 25px;
+}
+
+.eDescription{
+  width: 35%;
+}
+
+.eEdit{
+  width: 5%;
+}
+
+.entry:hover > .eEdit > .edit > a{
+  color: black;
+}
+
+.entry:hover > .eEdit > .edit > a:hover{
+  color: #00C974;
+}
+
+.eFuelDistance{
+  width: 15%;
+}
+
+.eFuelPrice{
+  width: 15%;
+}
+
+.eFuelDetails{
+  width: 20%;
+}
+
+.eFuelCons{
+  width: 15%;
+}
+
+.eServicePrice{
+  width: 10%;
+}
+
+.eComment{
+  min-width: 30%;
+}
+
+.eReminderComment{
+  min-width: 65%;
+}
+
+
+.hide{
+  display: none;
+}
+
+.edit{
+  float: left;
+}
+
+.edit > a{
+  color: white;
+  text-decoration: none;
+}
+
+
+button{
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: #c97400;
+  padding: 10px 10px;
+  letter-spacing: 2px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  color: #ffffff;
+  transition: all .1s ease-in-out;
+}
+
+button:hover{
+    background-color: #00C974;
+}

@@ -49,6 +49,26 @@ class Reminder extends Model
 
   }
 
+  public static function currentReminders($mileage){
+
+
+    $reminders = \App\Reminder::whereCar_id(session('car_id'))
+                                      ->where(function($query) use ($mileage){
+                                        $query->where('mileage', '>', $mileage)
+                                              ->orWhereNull('mileage');
+
+                                      })
+                                      ->where(function($query){
+                                        $query->whereDate('date', '>=', date('Y-m-d'))
+                                              ->orWhereNull('date');
+
+                                      })
+                                      ->orderBy('date')
+                                      ->get()->toArray();
+    return $reminders;
+
+  }
+
 
 
 }

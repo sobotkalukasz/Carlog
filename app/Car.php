@@ -128,7 +128,7 @@ class Car extends Model
   /*
   * it returns car object by its ID
   */
-  public function getCarById($id){
+  public static function getCarById($id){
 
     return \App\Car::whereId($id)->get();
   }

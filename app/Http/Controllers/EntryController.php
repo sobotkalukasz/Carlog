@@ -334,9 +334,19 @@ class EntryController extends Controller
     $error = $validator->messages();
     return back()->withErrors($validator)->with($formData);
 
-
-
-
   }
+
+
+  public function DeleteFuel($fuel_id) {
+
+    if (Session::has('id', 'name', 'email')){
+    //  \App\Fuel_expense::destroy($fuel_id);
+    return 'Kod odejmowania przebiegu!';
+    }
+    return Redirect::to('/');
+  }
+
+
+
 
 }

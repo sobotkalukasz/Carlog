@@ -90,7 +90,7 @@ class User extends Model
   /*
   * it returns all user cars (by users ID)
   */
-  public function getCars($id){
+  public static function getCars($id){
 
     return \App\User::find($id)->cars;
   }
@@ -99,9 +99,15 @@ class User extends Model
   /*
   * it returns only current user's cars (by users ID)
   */
-  public function getCurrentCars($id){
+  public static function hasActiveCars($id){
 
-    return \App\User::find($id)->cars->where('sale_date', "=", NULL);
+    $cars = \App\Car::whereUser_id($id)
+                    ->whereNull('sale_date')
+                    ->get();
+
+
+
+    return (!empty($cars->toArray()));
   }
 
 

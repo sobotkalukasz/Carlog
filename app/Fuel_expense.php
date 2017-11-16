@@ -35,7 +35,9 @@ class Fuel_expense extends Model
 
     if (session()->has('fuel_id')){
       $fuel = \App\Fuel_expense::find(session('fuel_id'));
-      session()->forget('fuel_id');
+      $distance = $fuel->distance;
+      $price = $fuel->price_all;
+      $litres = $fuel->litres;
     }else{
       $fuel = new \App\Fuel_expense;
       $fuel->car_id = $formData['car_id'];
@@ -54,9 +56,38 @@ class Fuel_expense extends Model
 
       $car = \App\Car::find($formData['car_id']);
 
-      $fuel_mileage = $car->fuel_mileage + $formData['distance'];
-      $fuel_total = $car->fuel_total + $formData['litres'];
-      $spendings_fuel = $car->spendings_fuel + $formData['price_all'];
+      if (session()->has('fuel_id'))
+        if ($distance != $formData['distance'])
+          $fuel_mileage = $car->fuel_mileage + ($formData['distance'] - $distance);
+        else
+          $fuel_mileage = $car->fuel_mileage;
+      else{
+        $fuel_mileage = $car->fuel_mileage + $formData['distance'];
+      }
+
+
+      if (session()->has('fuel_id'))
+        if ($litres != $formData['litres'])
+          $fuel_total = $car->fuel_total + ($formData['litres'] - $litres);
+        else
+          $fuel_total = $car->fuel_total;
+      else{
+        $fuel_total = $car->fuel_total + $formData['litres'];
+      }
+
+
+      if (session()->has('fuel_id')){
+          if ($price != $formData['price_all']){
+          session()->forget('fuel_id');
+          $spendings_fuel = $car->spendings_fuel + ($formData['price_all'] - $price);
+        }
+        else
+          $spendings_fuel = $car->spendings_fuel;
+      }
+      else{
+        $spendings_fuel = $car->spendings_fuel + $formData['price_all'];
+      }
+
 
       $avg = round((($fuel_total/$fuel_mileage)*100),2);
 
@@ -64,7 +95,6 @@ class Fuel_expense extends Model
           $car->mileage_current = $formData['mileage_current'];
       }
 
-      $car->mileage_current = $formData['mileage_current'];
       $car->fuel_mileage = $fuel_mileage;
       $car->fuel_total = $fuel_total;
       $car->spendings_fuel = $spendings_fuel;
@@ -85,5 +115,11 @@ class Fuel_expense extends Model
     unset($fuel);
     return false;
   }
+
+
+
+
+
+  
 
 }

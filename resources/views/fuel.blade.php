@@ -9,14 +9,24 @@
 @section('body')
 
   @php
-    $user = new \App\User;
-    $cars = $user->getCars(session('id'))->toArray();
+    $cars = (\App\User::getCars(session('id')))->toArray();
+
+    if(session()->has('fuel_id')){
+      $fuel = \App\Fuel_expense::whereId(session('fuel_id'))->get()->toArray();
+      //return var_dump($fuel);
+    }
 
   @endphp
 
   <div class="carform">
 
-    <h1>dodaj nowy wpis paliwowy</h1>
+    <h1>
+      @if(session()->has('fuel_id'))
+        edycja wpisu paliwowego
+      @else
+        dodaj nowy wpis paliwowy
+      @endif
+    </h1>
 
     <form action="{{ url('AddEditFuel') }}" method="post">
 
@@ -32,7 +42,11 @@
               <select id="car_id" name="car_id">
                 @for ($i=0; $i < sizeof($cars); $i++)
                     @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}">{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
+                        <option value ="{{ $cars[$i]['id'] }}"
+                          @if (session()->has('fuel_id') && ($cars[$i]['id'] == $fuel[0]['car_id']))
+                            selected
+                          @endif
+                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
                     @endif
                 @endfor
               </select>
@@ -49,16 +63,28 @@
             <h2>Rodzaj paliwa</h2>
 
             <div class="radioFuel">
-                <lable><input type="radio" name="fuel" value="LPG">
-                  <span>LPG</span></lable>
+                <lable><input type="radio" name="fuel" value="LPG"
+                  @if (session()->has('fuel_id') && ($fuel[0]['fuel'] == 'LPG'))
+                    checked
+                  @endif><span>LPG</span></lable>
             </div>
 
             <div class="radioFuel">
-                <lable><input type="radio" name="fuel" value="ON"><span>ON</span></lable>
+                <lable><input type="radio" name="fuel" value="ON"
+                  @if (session()->has('fuel_id') && ($fuel[0]['fuel'] == 'ON'))
+                    checked
+                  @endif><span>ON</span></lable>
             </div>
 
             <div class="radioFuel">
-                <lable><input type="radio" name="fuel" value="PB" checked><span>PB</span></lable>
+                <lable><input type="radio" name="fuel" value="PB"
+                  @if (session()->has('fuel_id'))
+                    @if ($fuel[0]['fuel'] == 'PB')
+                      checked
+                    @endif
+                  @else
+                    checked
+                  @endif><span>PB</span></lable>
             </div>
 
             <div style="clear:both;"></div>
@@ -75,6 +101,8 @@
                     @if (session()->has('date'))
                         value="{{ session('date') }}"
                         @php Session::forget('date') @endphp
+                    @elseif (session()->has('fuel_id') && $fuel[0]['date'])
+                      value="{{ $fuel[0]['date'] }}"
                     @endif >
                 </div>
 
@@ -100,6 +128,8 @@
                   @if (session()->has('litres'))
                       value="{{ session('litres') }}"
                       @php Session::forget('litres') @endphp
+                  @elseif (session()->has('fuel_id') && $fuel[0]['litres'])
+                      value="{{ $fuel[0]['litres'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -122,6 +152,8 @@
                   @if (session()->has('price_all'))
                       value="{{ session('price_all') }}"
                       @php Session::forget('price_all') @endphp
+                  @elseif (session()->has('fuel_id') && $fuel[0]['price_all'])
+                      value="{{ $fuel[0]['price_all'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -142,6 +174,8 @@
                   @if (session()->has('price_l'))
                       value="{{ session('price_l') }}"
                       @php Session::forget('price_l') @endphp
+                  @elseif (session()->has('fuel_id') && $fuel[0]['price_l'])
+                      value="{{ $fuel[0]['price_l'] }}"
                   @endif >
               <div class="calc"><i onclick="calculate()"class="icon-calc"></i></div>
               <div style="clear:both;"></div>
@@ -162,6 +196,8 @@
                   @if (session()->has('mileage_current'))
                       value="{{ session('mileage_current') }}"
                       @php Session::forget('mileage_current') @endphp
+                  @elseif (session()->has('fuel_id') && $fuel[0]['mileage_current'])
+                      value="{{ $fuel[0]['mileage_current'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -181,6 +217,8 @@
                   @if (session()->has('distance'))
                       value="{{ session('distance') }}"
                       @php Session::forget('distance') @endphp
+                  @elseif (session()->has('fuel_id') && $fuel[0]['distance'])
+                      value="{{ $fuel[0]['distance'] }}"
                   @endif >
               <div class="calc"><i onclick="avgCons()"class="icon-calc"></i></div>
               <div style="clear:both;"></div>
@@ -201,6 +239,8 @@
                   @if (session()->has('fuel_consumption'))
                       value="{{ session('fuel_consumption') }}"
                       @php Session::forget('fuel_consumption') @endphp
+                  @elseif (session()->has('fuel_id') && $fuel[0]['fuel_consumption'])
+                      value="{{ $fuel[0]['fuel_consumption'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -241,6 +281,8 @@
         document.getElementById("price_l").value = (price.value/litres.value).toFixed(2);
       }
 
+      $("#price_l").focus(function(){calculate()});
+
 
       function avgCons(){
         var mileageCur = document.getElementById("mileage_c");
@@ -255,9 +297,11 @@
           document.getElementById("distance").value = distance;
           document.getElementById("consumption").value = consumption;
         }else{
-          alert("Podany przebieg jest niższy od ostatniej zapisanej wartości!")
+          alert("Podany przebieg jest niższy od ostatniej zapisanej wartości: "+mileageAct+" km.")
         }
       }
+
+      $("#distance").focus(function(){avgCons()});
 
 
       function getMileage(){

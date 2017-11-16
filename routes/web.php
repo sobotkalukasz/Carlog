@@ -17,8 +17,14 @@ use Illuminate\Support\Facades\Redirect;
 Route::get('/', 'CarlogController@home');
 Route::get('/Logout', 'CarlogController@logout');
 Route::get('/AddCar', 'CarlogController@AddCarView');
+
 Route::get('/EditCarById/{id}', 'CarlogController@EditCarView')->name('edit.car');
 Route::get('/DeleteCarById/{id}', 'CarController@DeleteCar')->name('delete.car');
+Route::get('/InfoCarById/{id}', 'CarlogController@InfoCarView')->name('info.car');
+
+Route::get('/EditFuelById/{id}', 'CarlogController@EditFuelView')->name('edit.fuel');
+Route::get('/DeleteFuelById/{id}', 'EntryController@DeleteFuel')->name('delete.fuel');
+
 Route::get('/Fuel', 'CarlogController@FuelView');
 Route::get('/Reminder', 'CarlogController@ReminderView');
 Route::get('/Expense', 'CarlogController@ExpenseView');
@@ -26,6 +32,14 @@ Route::get('/Service', 'CarlogController@ServiceView');
 
 Route::get('/EditCarView', function() {
   return view('add_edit_car');
+});
+
+Route::get('/InfoCarView', function() {
+  return view('info');
+});
+
+Route::get('/EditFuelView', function() {
+  return view('fuel');
 });
 
 Route::post('/LoginFormValidation', 'LoginRegisterController@LoginFormValidation');
@@ -38,7 +52,3 @@ Route::post('/AddEditFuel', 'EntryController@AddEditFuel');
 Route::post('/AddEditReminder', 'EntryController@AddEditReminder');
 Route::post('/AddEditExpense', 'EntryController@AddEditExpense');
 Route::post('/AddEditService', 'EntryController@AddEditService');
-
-//Auth::routes();
-
-//Route::get('/home', 'HomeController@index')->name('home');

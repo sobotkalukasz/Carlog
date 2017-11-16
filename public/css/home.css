@@ -11,7 +11,8 @@
     margin-bottom: 50px;
     text-align: left;
     text-transform: uppercase;
-    font-size: 30px
+    font-size: 30px;
+    letter-spacing: 2px;
 }
 
 #carsection > h1:first-child{
@@ -30,11 +31,16 @@
   font-size: 30px;
   position: relative;
   vertical-align: middle;
+  transition: all .1s ease-in-out;
+  border-radius: 5px;
 }
 
 
 .cartile:hover{
-  background-color: #c96400;
+  background-color: #00C974;
+  -webkit-box-shadow: 0px 0px 1px 1px #00C974;
+  -moz-box-shadow: 0px 0px 1px 1px #00C974;
+  box-shadow: 0px 0px 2px 1px #00C974;
 }
 
 a.carlink{
@@ -45,7 +51,6 @@ a.carlink{
   height: 260px;
   display:table-cell;
   vertical-align:middle;
-
 }
 
 a.carlink:hover{

@@ -113,7 +113,7 @@
         {{-- Submit button --}}
 
           <div class="submitdiv">
-              <input type="submit" class="submit" value="zapisz przypomnienie">
+              <input type="submit" class="submit" value="dodaj przypomnienie">
           </div>
 
 

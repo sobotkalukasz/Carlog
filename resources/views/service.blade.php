@@ -203,7 +203,7 @@
 
           {{-- Input div- reminder_date --}}
 
-            <div class="inputdivs left">
+            <div class="inputdivs left hide">
                   <h2>Data przypomnienia</h2>
                   <div class="right">
                       <input type="date" id="r_date" name="reminder_date"
@@ -227,7 +227,7 @@
 
             {{-- Input and error div - reminder_mileage--}}
 
-            <div class="inputdivs left">
+            <div class="inputdivs left hide">
               <h2>Przebieg pojazdu [km]</h2>
                 <input type="text" id="r_mileage" placeholder="Przebieg pojazdu [km]" class="carinput small" name="reminder_mileage"
                     @if (session()->has('reminder_mileage'))
@@ -248,7 +248,7 @@
 
             {{-- Input and error div - reminder_comment --}}
 
-            <div class="inputdivs">
+            <div class="inputdivs hide">
               <h2>Treść przypomnienia</h2>
               <textarea placeholder="Wpisz treść przypomnienia" id="r_comment" name="reminder_comment"
                   rows="5" class="carinput"></textarea>
@@ -278,26 +278,20 @@
 @section('script')
     <script>
 
-        var checkbox = document.getElementById('check');
 
         function checkboxFunction(){
-          if(checkbox.checked){
-              document.getElementById("sub").value = 'dodaj z przypomnieniem';
-              document.getElementById("r_date").disabled = false;
-              document.getElementById("r_mileage").disabled = false;
-              document.getElementById("r_comment").disabled = false;
-          }
-          else{
-            document.getElementById("sub").value = 'zapisz serwis';
-            document.getElementById("r_date").disabled = true;
-            document.getElementById("r_mileage").disabled = true;
-            document.getElementById("r_comment").disabled = true;
+          if($('#check').prop("checked")){
+              $("#sub").val('dodaj z przypomnieniem');
+              $(".hide").show(200);
+          }else{
+            $("#sub").val('dodaj wydatek');
+            $(".hide").hide(200);
           }
         };
 
-        window.onload = checkboxFunction;
+        $(document).ready(checkboxFunction);
 
-        checkbox.addEventListener('change', function(){
+        $('#check').on('change', function(){
           checkboxFunction();
         });
 
@@ -316,6 +310,8 @@
           document.getElementById("price_total").value = Number(price_parts.value)+Number(price_labour.value);
         }
 
+        $("#price_total").focus(function(){calculate()});
+
 
 
         function formValidator() {
@@ -323,14 +319,14 @@
           var mileage = document.forms["service"]["reminder_mileage"].value;
           var mileage_last = getMileage();
 
-          if(checkbox.checked){
+          if($('#check').prop("checked")){
               if (date =="" && mileage ==""){
                 alert("Należy podać datę lub stan licznika przypomnienia!");
                 return false;
               }
 
               if(mileage !="" && mileage < mileage_last){
-                alert('Podany przebieg przypomienia jest niższy od aktualnego przebiegu pojazdu: ' + mileage_last + '.');
+                alert('Podany przebieg przypomienia jest niższy od aktualnego przebiegu pojazdu: ' + mileage_last + ' km.');
                 return false;
               }
           }
