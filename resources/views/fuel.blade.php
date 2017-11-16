@@ -30,6 +30,14 @@
 
     <form action="{{ url('AddEditFuel') }}" method="post">
 
+
+      {{-- If editing existing fuel entry it creates hidden input field with it id --}}
+
+      @if(session()->has('fuel_id'))
+        <input type="hidden" name="fuel_id" value="{{ session('fuel_id') }}">
+      @endif
+
+
       {{-- CSRF Token.---------------------}}
       {!! csrf_field() !!}
 
@@ -53,6 +61,7 @@
             </div>
             <div style="clear:both;"></div>
         </div>
+
 
 
 
@@ -166,6 +175,7 @@
 
 
 
+
           {{-- Input and error div - price_l --}}
 
           <div class="inputdivs left">
@@ -188,6 +198,8 @@
           @endif
 
 
+
+
           {{-- Input and error div - mileage_current --}}
 
           <div class="inputdivs left">
@@ -207,6 +219,8 @@
               {{ $errors->first('mileage_current') }}
             </div>
           @endif
+
+
 
 
           {{-- Input and error div - distance --}}
@@ -231,6 +245,7 @@
           @endif
 
 
+
           {{-- Input and error div - fuel_consumption --}}
 
           <div class="inputdivs left">
@@ -253,12 +268,24 @@
           @endif
 
 
+
           {{-- Submit button --}}
 
           <div class="submitdiv">
-              <input type="submit" class="submit" value="dodaj wpis">
+              <input type="submit" class="submit"
+              @if (session()->has('fuel_id'))
+                  value="zapisz zmiany"
+              @else
+                value="dodaj wpis"
+              @endif >
           </div>
 
+
+          {{-- Deletes fuel_id from session() --}}
+
+          @if(session()->has('fuel_id'))
+            @php session()->forget('fuel_id') @endphp
+          @endif
 
 
         <div style="clear:both;"></div>

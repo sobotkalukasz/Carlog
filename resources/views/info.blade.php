@@ -34,9 +34,9 @@
     * Get all fuel expenses by Car id *
     **********************************/
 
-    $fuel = DB::table('fuel_expenses')->whereCar_id(session('car_id'))
-                                      ->orderBy('date', 'desc')
-                                      ->get()->toArray();
+    $fuel = \App\Fuel_expense::whereCar_id(session('car_id'))
+                              ->orderBy('date', 'desc')
+                              ->get()->toArray();
     $fuel_size = sizeof($fuel);
 
     //return var_dump($fuel);
@@ -48,9 +48,9 @@
     * Get all services by Car id *
     *****************************/
 
-    $service = DB::table('services')->whereCar_id(session('car_id'))
-                                      ->orderBy('date', 'desc')
-                                      ->get()->toArray();
+    $service = \App\Service::whereCar_id(session('car_id'))
+                            ->orderBy('date', 'desc')
+                            ->get()->toArray();
     $service_size = sizeof($service);
 
     //return var_dump($service);
@@ -59,13 +59,13 @@
 
 
 
-    /**********************************
-    * Get all fuel expenses by Car id *
-    **********************************/
+    /***********************************
+    * Get all other expenses by Car id *
+    ***********************************/
 
-    $expense = DB::table('expenses')->whereCar_id(session('car_id'))
-                                      ->orderBy('date', 'desc')
-                                      ->get()->toArray();
+    $expense = \App\Expense::whereCar_id(session('car_id'))
+                            ->orderBy('date', 'desc')
+                            ->get()->toArray();
     $expense_size = sizeof($expense);
 
     //return var_dump($expense);
@@ -90,13 +90,13 @@
     //$sortByMil = array();
 
     /*for ($i = 0; $i < $reminder_size; $i++){
-      for ($j = 0; $j < $reminder_size; $j++){
-        if ($reminder[$i]['id'] == $reminderByMileage[$j]['id']){
-          array_push($sortByMil, $j);
-        }
-      }
-    }*/
-
+    *  for ($j = 0; $j < $reminder_size; $j++){
+    *    if ($reminder[$i]['id'] == $reminderByMileage[$j]['id']){
+    *      array_push($sortByMil, $j);
+    *    }
+    *  }
+    *}
+    */
 
     function sort_by_mileage ($a, $b){
       if ($a['mileage'] == '' && $b['mileage'] != '') return 1;
@@ -420,20 +420,20 @@
                   <div class="entry" id="f{{ $i }}">
                 @endif
             @endif
-                <div class="eDate left">{{ $fuel[$i]->date }}</div>
-                <div class="eMileage left">{{ withSpace($fuel[$i]->mileage_current) }}</div>
-                <div class="eFuelDistance left">{{ number_format($fuel[$i]->distance, 0, ',', ' ') }}</div>
-                <div class="eFuelPrice left">{{ $fuel[$i]->price_all }} zł</div>
-                <div class="eFuelDetails left">{{ $fuel[$i]->litres. "l x ".$fuel[$i]->price_l." zł"  }}</div>
-                <div class="eFuelCons left">{{ $fuel[$i]->fuel_consumption }}</div>
+                <div class="eDate left">{{ $fuel[$i]['date'] }}</div>
+                <div class="eMileage left">{{ withSpace($fuel[$i]['mileage_current']) }}</div>
+                <div class="eFuelDistance left">{{ number_format($fuel[$i]['distance'], 0, ',', ' ') }}</div>
+                <div class="eFuelPrice left">{{ $fuel[$i]['price_all'] }} zł</div>
+                <div class="eFuelDetails left">{{ $fuel[$i]['litres']. "l x ".$fuel[$i]['price_l']." zł"  }}</div>
+                <div class="eFuelCons left">{{ $fuel[$i]['fuel_consumption'] }}</div>
                 <div class="eEdit left">
                   <div class="edit">
-                    <a href="{{ route('edit.fuel', $fuel[$i]->id) }}" data-tooltip="Edytuj wpis" class="careditlink">
+                    <a href="{{ route('edit.fuel', $fuel[$i]['id']) }}" data-tooltip="Edytuj wpis" class="careditlink">
                       <i class="icon-pencil"></i>
                     </a>
                   </div>
                   <div class="edit">
-                    <a href="{{ route('delete.fuel', $fuel[$i]->id) }}" data-tooltip="Usuń wpis" class="careditlink"
+                    <a href="{{ route('delete.fuel', $fuel[$i]['id']) }}" data-tooltip="Usuń wpis" class="careditlink"
                       onclick="return confirm('Jesteś pewien, że chcesz usunąć ten wpis');">
                       <i class="icon-trash-empty"></i>
                     </a>
@@ -493,12 +493,12 @@
                   <div class="entry" id="s{{ $i }}">
                 @endif
             @endif
-                <div class="eDate left">{{ $service[$i]->date }}</div>
-                <div class="eMileage left">{{ withSpace($service[$i]->mileage) }}</div>
-                <div class="eDescription left" data-tooltip="{{ 'Komentarz:  '.$service[$i]->comment }}">{{ $service[$i]->description }}</div>
-                <div class="eServicePrice left">{{ $service[$i]->price_parts }} zł</div>
-                <div class="eServicePrice left">{{ $service[$i]->price_labour }} zł</div>
-                <div class="eServicePrice left">{{ $service[$i]->price_total }} zł</div>
+                <div class="eDate left">{{ $service[$i]['date'] }}</div>
+                <div class="eMileage left">{{ withSpace($service[$i]['mileage']) }}</div>
+                <div class="eDescription left" data-tooltip="{{ 'Komentarz:  '.$service[$i]['comment'] }}">{{ $service[$i]['description'] }}</div>
+                <div class="eServicePrice left">{{ $service[$i]['price_parts'] }} zł</div>
+                <div class="eServicePrice left">{{ $service[$i]['price_labour'] }} zł</div>
+                <div class="eServicePrice left">{{ $service[$i]['price_total'] }} zł</div>
                 <div class="eEdit left">
                   <div class="edit">
                     <a href="" data-tooltip="Edituj wpis" class="careditlink">
@@ -563,20 +563,20 @@
                   <div class="entry" id="e{{ $i }}">
                 @endif
             @endif
-                <div class="eDate left">{{ $expense[$i]->date }}</div>
-                <div class="eDescription left">{{ $expense[$i]->description }}</div>
+                <div class="eDate left">{{ $expense[$i]['date'] }}</div>
+                <div class="eDescription left">{{ $expense[$i]['description'] }}</div>
 
-                @if ($expense[$i]->comment == NULL)
+                @if ($expense[$i]['comment'] == NULL)
                     <div class="eDescription left">Brak uwag</div>
                 @else
-                    @if (strlen($expense[$i]->comment) > 45)
-                      <div class="eDescription left" data-tooltip="{{ $expense[$i]->comment }}">{{ mb_substr($expense[$i]->comment, 0, 45)."..." }}</div>
+                    @if (strlen($expense[$i]['comment']) > 45)
+                      <div class="eDescription left" data-tooltip="{{ $expense[$i]['comment'] }}">{{ mb_substr($expense[$i]['comment'], 0, 45)."..." }}</div>
                     @else
-                      <div class="eDescription left">{{ $expense[$i]->comment }}</div>
+                      <div class="eDescription left">{{ $expense[$i]['comment'] }}</div>
                     @endif
                 @endif
 
-                <div class="eServicePrice left">{{ $expense[$i]->price }} zł</div>
+                <div class="eServicePrice left">{{ $expense[$i]['price'] }} zł</div>
                 <div class="eEdit left">
                   <div class="edit">
                     <a href="" data-tooltip="Edituj wpis" class="careditlink">

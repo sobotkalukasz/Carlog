@@ -112,6 +112,9 @@ class CarlogController extends Controller
       return Redirect::to('/');
     }
 
+
+
+
     public function EditFuelView ($fuel_id) {
 
       if (Session::has('id', 'name', 'email')){

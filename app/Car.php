@@ -68,13 +68,12 @@ class Car extends Model
 
   /*
   * it saves car into database
-  * if session had 'car_id' then it saves changes in existing car
+  * if $formData had 'car_id' then it saves changes in existing car
   */
   public function saveCar($formData){
 
-    if (session()->has('car_id')){
-      $car = \App\Car::find(session('car_id'));
-      session()->forget('car_id');
+    if ($formData['car_id']){
+      $car = \App\Car::find($formData['car_id']);
     }else{
       $car = new \App\Car;
       $car->user_id = session('id');
@@ -108,8 +107,7 @@ class Car extends Model
   */
   public function saleCar($formData){
 
-    $car = \App\Car::find(session('car_id'));
-    session()->forget('car_id');
+    $car = \App\Car::find($formData['car_id']);
 
     $car->sale_date = $formData['sale_date'];
     $car->sale_price = $formData['sale_price'];

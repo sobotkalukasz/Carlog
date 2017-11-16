@@ -31,6 +31,12 @@
       {!! csrf_field() !!}
 
 
+      {{-- If editing existing fuel entry it creates hidden input field with it id --}}
+
+      @if(session()->has('car_id'))
+        <input type="hidden" name="car_id" value="{{ session('car_id') }}">
+      @endif
+
 
       {{-- Input and error div - Make --}}
 
@@ -187,7 +193,7 @@
         <div class="radioFuel">
           <lable><input type="radio" name="fuel" value="LPG"
             @if(session()->has('car_id') && $car[0]->fuel == 'LPG')
-            checked
+              checked
             @endif
             ><span>LPG</span></lable>
         </div>
@@ -195,15 +201,19 @@
         <div class="radioFuel">
           <lable><input type="radio" name="fuel" value="ON"
             @if(session()->has('car_id') && $car[0]->fuel == 'ON')
-            checked
+              checked
             @endif
             ><span>ON</span></lable>
         </div>
 
         <div class="radioFuel">
           <lable><input type="radio" name="fuel" value="PB"
-            @if(session()->has('car_id') && $car[0]->fuel == 'PB')
-            checked
+            @if(session()->has('car_id'))
+              @if ($car[0]->fuel == 'PB')
+                checked
+              @endif
+            @else
+              checked
             @endif
             ><span>PB</span></lable>
         </div>
@@ -356,6 +366,13 @@
                       value="potwietdź sprzedaż"
                     @endif >
             </div>
+
+
+            {{-- Deletes car_id from session() --}}
+
+            @if(session()->has('car_id'))
+              @php session()->forget('car_id') @endphp
+            @endif
 
             <div style="clear:both;"></div>
 

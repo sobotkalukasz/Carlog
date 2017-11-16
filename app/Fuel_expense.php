@@ -29,12 +29,12 @@ class Fuel_expense extends Model
 
   /*
   * it saves fuel in database
-  * if session had 'fuel_id' then it saves changes in existing fuel entry
+  * if $formData had 'fuel_id' then it saves changes in existing fuel entry
   */
   public function savefuel($formData){
 
-    if (session()->has('fuel_id')){
-      $fuel = \App\Fuel_expense::find(session('fuel_id'));
+    if ($formData['fuel_id']){
+      $fuel = \App\Fuel_expense::find($formData['fuel_id']);
       $distance = $fuel->distance;
       $price = $fuel->price_all;
       $litres = $fuel->litres;
@@ -56,7 +56,7 @@ class Fuel_expense extends Model
 
       $car = \App\Car::find($formData['car_id']);
 
-      if (session()->has('fuel_id'))
+      if ($formData['fuel_id'])
         if ($distance != $formData['distance'])
           $fuel_mileage = $car->fuel_mileage + ($formData['distance'] - $distance);
         else
@@ -66,7 +66,7 @@ class Fuel_expense extends Model
       }
 
 
-      if (session()->has('fuel_id'))
+      if ($formData['fuel_id'])
         if ($litres != $formData['litres'])
           $fuel_total = $car->fuel_total + ($formData['litres'] - $litres);
         else
@@ -76,9 +76,8 @@ class Fuel_expense extends Model
       }
 
 
-      if (session()->has('fuel_id')){
+      if ($formData['fuel_id']){
           if ($price != $formData['price_all']){
-          session()->forget('fuel_id');
           $spendings_fuel = $car->spendings_fuel + ($formData['price_all'] - $price);
         }
         else
@@ -120,6 +119,6 @@ class Fuel_expense extends Model
 
 
 
-  
+
 
 }

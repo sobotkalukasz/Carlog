@@ -340,8 +340,34 @@ class EntryController extends Controller
   public function DeleteFuel($fuel_id) {
 
     if (Session::has('id', 'name', 'email')){
-    //  \App\Fuel_expense::destroy($fuel_id);
-    return 'Kod odejmowania przebiegu!';
+
+      $fuel = \App\Fuel_expense::find($fuel_id);
+      $car = \App\Car::find($fuel->car_id);
+
+      if($fuel->mileage_current == $car->mileage_current)
+        $car->mileage_current = $car->mileage_current - $fuel->distance;
+
+      $car->fuel_mileage = $car->fuel_mileage - $fuel->distance;
+      $car->fuel_total = $car->fuel_total - $fuel->litres;
+      $car->spendings_fuel = $car->spendings_fuel - $fuel->price_all;
+      $car->fuel_avg_consumption = round((($car->fuel_total/$car->fuel_mileage)*100),2);
+
+
+      if($car->save()){
+
+        unset($fuel);
+        unset($car);
+
+        \App\Fuel_expense::destroy($fuel_id);
+
+        return Redirect::to('/');
+      }
+
+      unset($fuel);
+      unset($car);
+      
+      return Redirect::to('/');
+
     }
     return Redirect::to('/');
   }
