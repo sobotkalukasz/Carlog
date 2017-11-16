@@ -69,6 +69,7 @@ class EntryController extends Controller
 
 
 
+
   public function AddEditReminder (Request $request) {
 
     $formData = $request->all();
@@ -376,6 +377,7 @@ class EntryController extends Controller
 
 
 
+
   public function DeleteService($service_id) {
 
     if (Session::has('id', 'name', 'email')){
@@ -404,6 +406,23 @@ class EntryController extends Controller
       return Redirect::to('/');
 
     }
+    return Redirect::to('/');
+
+
+  }
+
+
+
+
+  public function DeleteReminder($reminder_id) {
+
+    if (Session::has('id', 'name', 'email')){
+
+        \App\Reminder::destroy($reminder_id);
+
+        return Redirect::to('/');
+      }
+
     return Redirect::to('/');
 
 

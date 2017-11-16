@@ -139,4 +139,17 @@ class CarlogController extends Controller
       return Redirect::to('/');
     }
 
+
+
+    public function EditReminderView ($reminder_id) {
+
+      if (Session::has('id', 'name', 'email')){
+
+        Session::put('reminder_id', $reminder_id);
+        return Redirect::to('/EditReminderView');
+      }
+
+      return Redirect::to('/');
+    }
+
 }

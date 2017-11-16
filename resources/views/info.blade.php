@@ -353,12 +353,12 @@
 
                     <div class="eEdit left">
                       <div class="edit">
-                        <a href="" data-tooltip="Edytuj przypomnienie" class="careditlink">
+                        <a href="{{ route('edit.reminder', $reminder[$i]['id']) }}" data-tooltip="Edytuj przypomnienie" class="careditlink">
                           <i class="icon-pencil"></i>
                         </a>
                       </div>
                       <div class="edit">
-                        <a href="" data-tooltip="Usuń przypomnienie" class="careditlink"
+                        <a href="{{ route('delete.reminder', $reminder[$i]['id']) }}" data-tooltip="Usuń przypomnienie" class="careditlink"
                           onclick="return confirm('Jesteś pewien, że chcesz usunąć to przypomnienie');">
                           <i class="icon-trash-empty"></i>
                         </a>
@@ -578,7 +578,7 @@
                 <div class="eServicePrice left">{{ $expense[$i]['price'] }} zł</div>
                 <div class="eEdit left">
                   <div class="edit">
-                    <a href="" data-tooltip="Edituj wpis" class="careditlink">
+                    <a href="" data-tooltip="Edytuj wpis" class="careditlink">
                       <i class="icon-pencil"></i>
                     </a>
                   </div>

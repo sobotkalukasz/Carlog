@@ -32,9 +32,14 @@ class Reminder extends Model
   */
   public function saveReminder($formData){
 
-
-    $reminder = new \App\Reminder;
-    $reminder->car_id = $formData['car_id'];
+    if (isset($formData['reminder_id'])){
+      $reminder = \App\Reminder::find($formData['reminder_id']);
+    }
+    else{
+      $reminder = new \App\Reminder;
+      $reminder->car_id = $formData['car_id'];
+    }
+    
     $reminder->date = $formData['reminder_date'];
     $reminder->mileage = $formData['reminder_mileage'];
     $reminder->comment = $formData['reminder_comment'];
@@ -48,6 +53,10 @@ class Reminder extends Model
     return false;
 
   }
+
+
+
+
 
   public static function currentReminders($mileage){
 

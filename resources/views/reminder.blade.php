@@ -12,17 +12,36 @@
     $user = new \App\User;
     $cars = $user->getCars(session('id'))->toArray();
 
+    if(session()->has('reminder_id')){
+      $reminder = \App\Reminder::whereId(session('reminder_id'))->get()->toArray();
+      //return var_dump($reminder);
+    };
+
   @endphp
 
   <div class="carform">
 
-    <h1>dodaj nowe przypomnienie</h1>
+    <h1>
+      @if(session()->has('reminder_id'))
+        edycja przypomnienia
+      @else
+        dodaj nowe przypomnienie
+      @endif
+    </h1>
+
 
     <form name="reminder" action="{{ url('AddEditReminder') }}" method="post"
       onsubmit="return formValidator()">
 
       {{-- CSRF Token.---------------------}}
       {!! csrf_field() !!}
+
+
+      {{-- If editing existing reminder entry it creates hidden input field with its id --}}
+
+      @if(session()->has('reminder_id'))
+        <input type="hidden" name="reminder_id" value="{{ session('reminder_id') }}">
+      @endif
 
 
 
@@ -35,7 +54,11 @@
               <select id="car_id" name="car_id">
                 @for ($i=0; $i < sizeof($cars); $i++)
                     @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}">{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
+                        <option value ="{{ $cars[$i]['id'] }}"
+                          @if (session()->has('reminder_id') && ($cars[$i]['id'] == $reminder[0]['car_id']))
+                            selected
+                            @endif
+                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
                     @endif
                 @endfor
               </select>
@@ -54,6 +77,8 @@
                     @if (session()->has('reminder_date'))
                         value="{{ session('reminder_date') }}"
                         @php Session::forget('reminder_date') @endphp
+                    @elseif (session()->has('reminder_id') && $reminder[0]['date'])
+                        value="{{ $reminder[0]['date'] }}"
                     @endif >
                 </div>
 
@@ -79,6 +104,8 @@
                   @if (session()->has('reminder_mileage'))
                       value="{{ session('reminder_mileage') }}"
                       @php Session::forget('reminder_mileage') @endphp
+                  @elseif (session()->has('reminder_id') && $reminder[0]['mileage'])
+                      value="{{ $reminder[0]['mileage'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -97,12 +124,27 @@
           <div class="inputdivs">
             <h2>Treść przypomnienia</h2>
             <textarea placeholder="Wpisz treść przypomnienia" name="reminder_comment"
-                rows="5" class="carinput"
-                  @if (session()->has('reminder_comment'))
-                      value="{{ session('reminder_comment') }}"
-                      @php Session::forget('reminder_comment') @endphp
-                  @endif ></textarea>
+                rows="5" class="carinput" id="r_comment"></textarea>
           </div>
+
+
+          {{-- hidden input for JQuery function --}}
+
+          <input type="hidden" id="text"
+          @if (session()->has('reminder_comment'))
+              {{  'value=1' }}
+          @elseif (session()->has('reminder_id') && $reminder[0]['comment'])
+              {{  'value=1' }}
+              @php session()->put('reminder_comment', $reminder[0]['comment']); @endphp
+          @endif>
+
+
+
+          @if($errors->has('reminder_comment'))
+            <div class="errordivs">
+              {{ $errors->first('reminder_comment') }}
+            </div>
+          @endif
 
           <div style="clear:both;"></div>
 
@@ -113,9 +155,20 @@
         {{-- Submit button --}}
 
           <div class="submitdiv">
-              <input type="submit" class="submit" value="dodaj przypomnienie">
+              <input type="submit" class="submit"
+              @if(session()->has('reminder_id'))
+                value="zapisz zmiany"
+              @else
+                value="dodaj przypomnienie"
+              @endif >
           </div>
 
+
+          {{-- Deletes reminder_id from session() --}}
+
+          @if(session()->has('reminder_id'))
+            @php session()->forget('reminder_id') @endphp
+          @endif
 
 
         <div style="clear:both;"></div>
@@ -154,6 +207,16 @@
               return cars[i]['mileage_current'];
             }
           }
+        }
+
+
+        //if value == 1 it fills #r_comment and unset session value
+
+        if($("#text").val() == 1){
+          var text = <?php echo json_encode(session('reminder_comment')); ?>;
+          var field = '#r_comment';
+          $(field).val(text);
+          <?php Session::forget('reminder_comment') ?>;
         }
 
     </script>

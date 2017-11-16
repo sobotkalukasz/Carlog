@@ -31,6 +31,10 @@ Route::get('/EditServiceById/{id}', 'CarlogController@EditServiceView')->name('e
 Route::get('/DeleteServiceById/{id}', 'EntryController@DeleteService')->name('delete.service');
 
 Route::get('/Reminder', 'CarlogController@ReminderView');
+Route::get('/EditReminderById/{id}', 'CarlogController@EditReminderView')->name('edit.reminder');
+Route::get('/DeleteReminderById/{id}', 'EntryController@DeleteReminder')->name('delete.reminder');
+
+
 Route::get('/Expense', 'CarlogController@ExpenseView');
 
 
@@ -49,6 +53,10 @@ Route::get('/EditFuelView', function() {
 
 Route::get('/EditServiceView', function() {
   return view('service');
+});
+
+Route::get('/EditReminderView', function() {
+  return view('reminder');
 });
 
 

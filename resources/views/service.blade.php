@@ -36,7 +36,7 @@
 
 
 
-      {{-- If editing existing fuel entry it creates hidden input field with it id --}}
+      {{-- If editing existing fuel entry it creates hidden input field with its id --}}
 
       @if(session()->has('service_id'))
         <input type="hidden" name="service_id" value="{{ session('service_id') }}">
