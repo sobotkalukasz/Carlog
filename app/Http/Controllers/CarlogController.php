@@ -152,4 +152,17 @@ class CarlogController extends Controller
       return Redirect::to('/');
     }
 
+
+
+    public function EditExpenseView ($expense_id) {
+
+      if (Session::has('id', 'name', 'email')){
+
+        Session::put('expense_id', $expense_id);
+        return Redirect::to('/EditExpenseView');
+      }
+
+      return Redirect::to('/');
+    }
+
 }

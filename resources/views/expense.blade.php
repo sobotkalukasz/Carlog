@@ -12,11 +12,22 @@
     $user = new \App\User;
     $cars = $user->getCars(session('id'))->toArray();
 
+    if(session()->has('expense_id')){
+      $expense = \App\Expense::whereId(session('expense_id'))->get()->toArray();
+      //return var_dump($expense);
+    };
+
   @endphp
 
   <div class="carform">
 
-    <h1>dodaj nowy wydatek</h1>
+    <h1>
+      @if(session()->has('expense_id'))
+        edycja wpisu
+      @else
+        dodaj nowy wydatek
+      @endif
+    </h1>
 
     <form name="expense" action="{{ url('AddEditExpense') }}" method="post"
       onsubmit="return formValidator()">
@@ -24,6 +35,12 @@
       {{-- CSRF Token.---------------------}}
       {!! csrf_field() !!}
 
+
+      {{-- If editing existing expense entry it creates hidden input field with its id --}}
+
+      @if(session()->has('expense_id'))
+        <input type="hidden" name="expense_id" value="{{ session('expense_id') }}">
+      @endif
 
 
       {{-- Select div - Car selection --}}
@@ -35,7 +52,11 @@
               <select id="car_id" name="car_id">
                 @for ($i=0; $i < sizeof($cars); $i++)
                     @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}">{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
+                        <option value ="{{ $cars[$i]['id'] }}"
+                        @if (session()->has('expense_id') && ($cars[$i]['id'] == $expense[0]['car_id']))
+                          selected
+                        @endif
+                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
                     @endif
                 @endfor
               </select>
@@ -54,6 +75,8 @@
                     @if (session()->has('expense_date'))
                         value="{{ session('expense_date') }}"
                         @php Session::forget('expense_date') @endphp
+                    @elseif (session()->has('expense_id') && $expense[0]['date'])
+                        value="{{ $expense[0]['date'] }}"
                     @endif >
                 </div>
 
@@ -78,6 +101,8 @@
                   @if (session()->has('expense_description'))
                       value="{{ session('expense_description') }}"
                       @php Session::forget('expense_description') @endphp
+                  @elseif (session()->has('expense_id') && $expense[0]['description'])
+                      value="{{ $expense[0]['description'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -99,6 +124,8 @@
                   @if (session()->has('expense_price'))
                       value="{{ session('expense_price') }}"
                       @php Session::forget('expense_prica') @endphp
+                  @elseif (session()->has('expense_id') && $expense[0]['price'])
+                      value="{{ $expense[0]['price'] }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -117,8 +144,20 @@
           <div class="inputdivs">
             <h2>Uwagi</h2>
             <textarea placeholder="Pole opcjonalne" name="expense_comment"
-                rows="5" class="carinput"></textarea>
+                rows="5" class="carinput" id="e_comment"></textarea>
           </div>
+
+
+          {{-- hidden input for JQuery function --}}
+
+          <input type="hidden" id="text1"
+          @if (session()->has('expense_comment'))
+              {{  'value=1' }}
+          @elseif (session()->has('expense_id') && $expense[0]['comment'])
+              {{  'value=1' }}
+              @php session()->put('expense_comment', $expense[0]['comment']); @endphp
+          @endif>
+
 
           @if($errors->has('expense_comment'))
             <div class="errordivs">
@@ -197,6 +236,13 @@
                   rows="5" class="carinput"></textarea>
             </div>
 
+            {{-- hidden input for JQuery function --}}
+
+            <input type="hidden" id="text2"
+            @if (session()->has('reminder_comment'))
+                {{  'value=1' }}
+            @endif>
+
             @if($errors->has('reminder_comment'))
               <div class="errordivs">
                 {{ $errors->first('reminder_comment') . PHP_EOL }}
@@ -209,6 +255,14 @@
           <div class="submitdiv">
               <input type="submit" class="submit" id="sub" value="">
           </div>
+
+
+          {{-- Deletes expense_id from session() --}}
+
+          @if(session()->has('expense_id'))
+            @php session()->forget('expense_id') @endphp
+          @endif
+
 
 
         <div style="clear:both;"></div>
@@ -269,6 +323,28 @@
               return cars[i]['mileage_current'];
             }
           }
+        }
+
+
+
+
+        //if value == 1 it fills #e_comment and unset session value
+
+        if($("#text1").val() == 1){
+          var text = <?php echo json_encode(session('expense_comment')); ?>;
+          var field = '#e_comment';
+          $(field).val(text);
+          <?php Session::forget('expense_comment') ?>;
+        }
+
+
+        //if value == 1 it fills #r_comment and unset session value
+
+        if($("#text2").val() == 1){
+          var text = <?php echo json_encode(session('reminder_comment')); ?>;
+          var field = '#r_comment';
+          $(field).val(text);
+          <?php Session::forget('reminder_comment') ?>;
         }
 
 

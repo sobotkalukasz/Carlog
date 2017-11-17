@@ -57,7 +57,12 @@ class Service extends Model
             if ($price != $formData['service_price_total']){
               $spendings_service = $car->spendings_service + ($formData['service_price_total'] - $price);
             }
-        }else{
+            else{
+              $spendings_service = $car->spendings_service;
+            }
+
+        }
+        else{
           $spendings_service = $car->spendings_service + $formData['service_price_total'];
         }
 

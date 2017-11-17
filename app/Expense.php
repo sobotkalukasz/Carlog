@@ -27,13 +27,20 @@ class Expense extends Model
 
   /*
   * it saves expense into database
-  *
+  * if $formData had 'expense_id' then it saves changes in existing service entry
   */
   public function saveExpense($formData){
 
 
-    $expense = new \App\Expense;
-    $expense->car_id = $formData['car_id'];
+    if (isset($formData['expense_id'])){
+      $expense = \App\Expense::find($formData['expense_id']);
+      $price = $expense->price;
+    }
+    else{
+      $expense = new \App\Expense;
+      $expense->car_id = $formData['car_id'];
+    }
+
     $expense->date = $formData['expense_date'];
     $expense->description = $formData['expense_description'];
     $expense->price = $formData['expense_price'];
@@ -43,7 +50,18 @@ class Expense extends Model
 
       $car = \App\Car::find($formData['car_id']);
 
-      $spendings_others = $car->spendings_others + $formData['expense_price'];
+      if (isset($formData['expense_id'])){
+          if ($price != $formData['expense_price']){
+            $spendings_others = $car->spendings_others + ($formData['expense_price'] - $price);
+          }
+          else{
+            $spendings_others = $car->spendings_others;
+          }
+      }
+      else{
+        $spendings_others = $car->spendings_others + $formData['expense_price'];
+      }
+
       $car->spendings_others = $spendings_others;
 
       if ($car->save()){
