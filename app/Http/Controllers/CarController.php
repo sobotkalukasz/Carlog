@@ -131,8 +131,12 @@ class CarController extends Controller
   public function DeleteCar($car_id) {
 
     if (Session::has('id', 'name', 'email')){
-      \App\Car::destroy($car_id);
+      $car = \App\Car::find($car_id);
+      if($car->user_id == session('id')){
+        \App\Car::destroy($car_id);
+      }
     }
+    
     return Redirect::to('/');
   }
 

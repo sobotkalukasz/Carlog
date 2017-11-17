@@ -362,33 +362,38 @@ class EntryController extends Controller
 
       $fuel = \App\Fuel_expense::find($fuel_id);
       $car = \App\Car::find($fuel->car_id);
-      $car_id = $fuel->car_id;
 
-      if($fuel->mileage_current == $car->mileage_current)
-        $car->mileage_current = $car->mileage_current - $fuel->distance;
+      if ($car->user_id == session('id')){
 
-      $car->fuel_mileage = $car->fuel_mileage - $fuel->distance;
-      $car->fuel_total = $car->fuel_total - $fuel->litres;
-      $car->spendings_fuel = $car->spendings_fuel - $fuel->price_all;
-      $car->fuel_avg_consumption = round((($car->fuel_total/$car->fuel_mileage)*100),2);
+        $car_id = $fuel->car_id;
+
+        if($fuel->mileage_current == $car->mileage_current)
+          $car->mileage_current = $car->mileage_current - $fuel->distance;
+
+        $car->fuel_mileage = $car->fuel_mileage - $fuel->distance;
+        $car->fuel_total = $car->fuel_total - $fuel->litres;
+        $car->spendings_fuel = $car->spendings_fuel - $fuel->price_all;
+        $car->fuel_avg_consumption = round((($car->fuel_total/$car->fuel_mileage)*100),2);
 
 
-      if($car->save()){
+        if($car->save()){
+
+          unset($fuel);
+          unset($car);
+
+          \App\Fuel_expense::destroy($fuel_id);
+
+          return Redirect::route('info.car', $car_id);
+        }
 
         unset($fuel);
         unset($car);
 
-        \App\Fuel_expense::destroy($fuel_id);
-
         return Redirect::route('info.car', $car_id);
+
       }
-
-      unset($fuel);
-      unset($car);
-
-      return Redirect::route('info.car', $car_id);
-
     }
+
     return Redirect::to('/');
   }
 
@@ -401,31 +406,32 @@ class EntryController extends Controller
 
       $service = \App\Service::find($service_id);
       $car = \App\Car::find($service->car_id);
-      $car_id = $service->car_id;
 
-      $car->spendings_service = $car->spendings_service - $service->price_total;
+      if($car->user_id == session('id')){
 
+        $car_id = $service->car_id;
+        $car->spendings_service = $car->spendings_service - $service->price_total;
 
+        if($car->save()){
 
-      if($car->save()){
+          unset($sercie);
+          unset($car);
 
-        unset($sercie);
+          \App\Service::destroy($service_id);
+
+          return Redirect::route('info.car', $car_id);
+        }
+
+        unset($service);
         unset($car);
-
-        \App\Service::destroy($service_id);
 
         return Redirect::route('info.car', $car_id);
       }
-
       unset($service);
       unset($car);
-
-      return Redirect::route('info.car', $car_id);
-
     }
+
     return Redirect::to('/');
-
-
   }
 
 
@@ -436,16 +442,22 @@ class EntryController extends Controller
     if (Session::has('id', 'name', 'email')){
 
         $reminder = \App\Reminder::find($reminder_id);
-        $car_id = $reminder->car_id;
+        $car = \App\Car::find($reminder->car_id);
+
+        if($car->user_id == session('id')){
+          $car_id = $reminder->car_id;
+          unset($reminder);
+          unset($car);
+
+          \App\Reminder::destroy($reminder_id);
+
+          return Redirect::route('info.car', $car_id);
+        }
         unset($reminder);
-
-        \App\Reminder::destroy($reminder_id);
-
-        return Redirect::route('info.car', $car_id);
-      }
+        unset($car);
+    }
 
     return Redirect::to('/');
-
   }
 
 
@@ -457,31 +469,32 @@ class EntryController extends Controller
 
       $expense = \App\Expense::find($expense_id);
       $car = \App\Car::find($expense->car_id);
-      $car_id = $car->id;
 
-      $car->spendings_others = $car->spendings_others - $expense->price;
+      if($car->user_id == session('id')){
 
+        $car_id = $car->id;
+        $car->spendings_others = $car->spendings_others - $expense->price;
 
+        if($car->save()){
 
-      if($car->save()){
+          unset($expense);
+          unset($car);
+
+          \App\Expense::destroy($expense_id);
+
+          return Redirect::route('info.car', $car_id);
+        }
 
         unset($expense);
         unset($car);
 
-        \App\Expense::destroy($expense_id);
-
         return Redirect::route('info.car', $car_id);
       }
-
       unset($expense);
       unset($car);
-
-      return Redirect::route('info.car', $car_id);
-
     }
 
     return Redirect::to('/');
-
   }
 
 

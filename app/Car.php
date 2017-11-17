@@ -72,7 +72,7 @@ class Car extends Model
   */
   public function saveCar($formData){
 
-    if ($formData['car_id']){
+    if (isset($formData['car_id'])){
       $car = \App\Car::find($formData['car_id']);
     }else{
       $car = new \App\Car;

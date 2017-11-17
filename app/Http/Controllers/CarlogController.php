@@ -47,9 +47,11 @@ class CarlogController extends Controller
     public function EditCarView ($car_id) {
 
       if (Session::has('id', 'name', 'email')){
-
-        Session::put('car_id', $car_id);
-        return Redirect::to('/EditCarView');
+        $car = \App\Car::find($car_id);
+        if($car->user_id == session('id')){
+          Session::put('car_id', $car_id);
+          return Redirect::to('/EditCarView');
+        }
       }
 
       return Redirect::to('/');
@@ -60,9 +62,11 @@ class CarlogController extends Controller
     public function InfoCarView ($car_id) {
 
       if (Session::has('id', 'name', 'email')){
-
-        Session::put('car_id', $car_id);
-        return Redirect::to('/InfoCarView');
+        $car = \App\Car::find($car_id);
+        if($car->user_id == session('id')){
+          Session::put('car_id', $car_id);
+          return Redirect::to('/InfoCarView');
+        }
       }
 
       return Redirect::to('/');
@@ -118,8 +122,13 @@ class CarlogController extends Controller
 
       if (Session::has('id', 'name', 'email')){
 
-        Session::put('fuel_id', $fuel_id);
-        return Redirect::to('/EditFuelView');
+        $fuel = \App\Fuel_expense::find($fuel_id);
+        $car = \App\Car::find($fuel->car_id);
+
+        if($car->user_id == session('id')){
+          Session::put('fuel_id', $fuel_id);
+          return Redirect::to('/EditFuelView');
+        }
       }
 
       return Redirect::to('/');
@@ -132,8 +141,13 @@ class CarlogController extends Controller
 
       if (Session::has('id', 'name', 'email')){
 
-        Session::put('service_id', $service_id);
-        return Redirect::to('/EditServiceView');
+        $service = \App\Service::find($service_id);
+        $car = \App\Car::find($service->car_id);
+
+        if($car->user_id == session('id')){
+          Session::put('service_id', $service_id);
+          return Redirect::to('/EditServiceView');
+        }
       }
 
       return Redirect::to('/');
@@ -145,8 +159,13 @@ class CarlogController extends Controller
 
       if (Session::has('id', 'name', 'email')){
 
-        Session::put('reminder_id', $reminder_id);
-        return Redirect::to('/EditReminderView');
+        $reminder = \App\Reminder::find($reminder_id);
+        $car = \App\Car::find($reminder->car_id);
+
+        if($car->user_id == session('id')){
+          Session::put('reminder_id', $reminder_id);
+          return Redirect::to('/EditReminderView');
+        }
       }
 
       return Redirect::to('/');
@@ -158,8 +177,13 @@ class CarlogController extends Controller
 
       if (Session::has('id', 'name', 'email')){
 
-        Session::put('expense_id', $expense_id);
-        return Redirect::to('/EditExpenseView');
+        $expense = \App\Expense::find($expense_id);
+        $car = \App\Car::find($expense->car_id);
+
+        if($car->user_id == session('id')){
+          Session::put('expense_id', $expense_id);
+          return Redirect::to('/EditExpenseView');
+        }
       }
 
       return Redirect::to('/');
