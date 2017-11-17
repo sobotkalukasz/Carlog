@@ -294,6 +294,14 @@
           {{-- CSRF Token.---------------------}}
           {!! csrf_field() !!}
 
+
+          {{-- If editing existing fuel entry it creates hidden input field with it id --}}
+
+
+          @if(session()->has('car_id'))
+            <input type="hidden" name="car_id" value="{{ session('car_id') }}">
+          @endif
+
           {{-- Input divs - Sell date and price --}}
 
             <div class="inputdivs">

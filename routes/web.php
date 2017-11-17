@@ -17,62 +17,49 @@ use Illuminate\Support\Facades\Redirect;
 Route::get('/', 'CarlogController@home');
 Route::get('/Logout', 'CarlogController@logout');
 
-Route::get('/AddCar', 'CarlogController@AddCarView');
-Route::get('/EditCarById/{id}', 'CarlogController@EditCarView')->name('edit.car');
-Route::get('/DeleteCarById/{id}', 'CarController@DeleteCar')->name('delete.car');
-Route::get('/InfoCarById/{id}', 'CarlogController@InfoCarView')->name('info.car');
-
-Route::get('/Fuel', 'CarlogController@FuelView');
-Route::get('/EditFuelById/{id}', 'CarlogController@EditFuelView')->name('edit.fuel');
-Route::get('/DeleteFuelById/{id}', 'EntryController@DeleteFuel')->name('delete.fuel');
-
-Route::get('/Service', 'CarlogController@ServiceView');
-Route::get('/EditServiceById/{id}', 'CarlogController@EditServiceView')->name('edit.service');
-Route::get('/DeleteServiceById/{id}', 'EntryController@DeleteService')->name('delete.service');
-
-Route::get('/Reminder', 'CarlogController@ReminderView');
-Route::get('/EditReminderById/{id}', 'CarlogController@EditReminderView')->name('edit.reminder');
-Route::get('/DeleteReminderById/{id}', 'EntryController@DeleteReminder')->name('delete.reminder');
+//User
+Route::post('/LoginFormValidation', 'UserController@LoginFormValidation');
+Route::post('/RegisterFormValidation', 'UserController@RegisterFormValidation');
 
 
-Route::get('/Expense', 'CarlogController@ExpenseView');
-Route::get('/EditExpenseById/{id}', 'CarlogController@EditExpenseView')->name('edit.expense');
-Route::get('/DeleteExpenseById/{id}', 'EntryController@DeleteExpense')->name('delete.expense');
+//Car
+Route::get('/AddCar', 'CarController@View');
+Route::get('/EditCarById/{id}', 'CarController@EditView')->name('edit.car');
+Route::get('/EditCarView', function() {return view('add_edit_car');});
+Route::get('/DeleteCarById/{id}', 'CarController@Delete')->name('delete.car');
+Route::get('/InfoCarById/{id}', 'CarController@InfoView')->name('info.car');
+Route::get('/InfoCarView', function() {return view('info');});
+Route::post('/AddEditCar', 'CarController@AddEdit');
+Route::post('/SellCar', 'CarController@Sell');
 
 
-
-Route::get('/EditCarView', function() {
-  return view('add_edit_car');
-});
-
-Route::get('/InfoCarView', function() {
-  return view('info');
-});
-
-Route::get('/EditFuelView', function() {
-  return view('fuel');
-});
-
-Route::get('/EditServiceView', function() {
-  return view('service');
-});
-
-Route::get('/EditReminderView', function() {
-  return view('reminder');
-});
-
-Route::get('/EditExpenseView', function() {
-  return view('expense');
-});
+//Fuel
+Route::get('/Fuel', 'Fuel_expenseController@View');
+Route::get('/EditFuelById/{id}', 'Fuel_expenseController@Edit')->name('edit.fuel');
+Route::get('/EditFuelView', function() {return view('fuel');});
+Route::get('/DeleteFuelById/{id}', 'Fuel_expenseController@Delete')->name('delete.fuel');
+Route::post('/AddEditFuel', 'Fuel_expenseController@AddEdit');
 
 
-Route::post('/LoginFormValidation', 'LoginRegisterController@LoginFormValidation');
-Route::post('/RegisterFormValidation', 'LoginRegisterController@RegisterFormValidation');
+//Service
+Route::get('/Service', 'ServiceController@View');
+Route::get('/EditServiceById/{id}', 'ServiceController@EditView')->name('edit.service');
+Route::get('/EditServiceView', function() {return view('service');});
+Route::get('/DeleteServiceById/{id}', 'ServiceController@Delete')->name('delete.service');
+Route::post('/AddEditService', 'ServiceController@AddEdit');
 
-Route::post('/AddEditCar', 'CarController@AddEditCar');
-Route::post('/SellCar', 'CarController@SellCar');
 
-Route::post('/AddEditFuel', 'EntryController@AddEditFuel');
-Route::post('/AddEditReminder', 'EntryController@AddEditReminder');
-Route::post('/AddEditExpense', 'EntryController@AddEditExpense');
-Route::post('/AddEditService', 'EntryController@AddEditService');
+//Reminder
+Route::get('/Reminder', 'ReminderController@View');
+Route::get('/EditReminderById/{id}', 'ReminderController@EditView')->name('edit.reminder');
+Route::get('/EditReminderView', function() {return view('reminder');});
+Route::get('/DeleteReminderById/{id}', 'ReminderController@Delete')->name('delete.reminder');
+Route::post('/AddEditReminder', 'ReminderController@AddEdit');
+
+
+//Expense
+Route::get('/Expense', 'ExpenseController@View');
+Route::get('/EditExpenseById/{id}', 'ExpenseController@EditView')->name('edit.expense');
+Route::get('/EditExpenseView', function() {return view('expense');});
+Route::get('/DeleteExpenseById/{id}', 'ExpenseController@Delete')->name('delete.expense');
+Route::post('/AddEditExpense', 'ExpenseController@AddEdit');

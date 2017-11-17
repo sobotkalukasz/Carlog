@@ -8,17 +8,17 @@
 <div class="nav">
   <ol>
     <li>{{ Html::linkAction('CarlogController@home','Strona główna') }}</li>
-    <li>{{ Html::linkAction('CarlogController@AddCarView','Dodaj auto') }}</li>
+    <li>{{ Html::linkAction('CarController@View','Dodaj auto') }}</li>
     @if (session()->has('id') && $size == 0)
       <li data-tooltip="Brak samochodów">+ Nowy wpis
     @else
       <li>+ Nowy wpis
     @endif
       <ul>
-        <li>{{ Html::linkAction('CarlogController@FuelView','Paliwo') }}</li>
-        <li>{{ Html::linkAction('CarlogController@ServiceView','Serwis') }}</li>
-        <li>{{ Html::linkAction('CarlogController@ExpenseView','Inne wydatki') }}</li>
-        <li>{{ Html::linkAction('CarlogController@ReminderView','Przypomnienie') }}</li>
+        <li>{{ Html::linkAction('Fuel_expenseController@View','Paliwo') }}</li>
+        <li>{{ Html::linkAction('ServiceController@View','Serwis') }}</li>
+        <li>{{ Html::linkAction('ExpenseController@View','Inne wydatki') }}</li>
+        <li>{{ Html::linkAction('ReminderController@View','Przypomnienie') }}</li>
       </ul>
     </li>
     @if (session()->has('id') && $size != 0)

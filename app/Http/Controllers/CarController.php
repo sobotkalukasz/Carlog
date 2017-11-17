@@ -11,7 +11,48 @@ class CarController extends Controller
 {
 
 
-  public function AddEditCar (Request $request) {
+  public function View () {
+
+    if (Session::has('id', 'name', 'email')){
+      if (session()->has('car_id')){
+        session()->forget('car_id');
+      }
+      return view('add_edit_car');
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function EditView ($car_id) {
+
+    if (Session::has('id', 'name', 'email')){
+      $car = \App\Car::find($car_id);
+      if($car->user_id == session('id')){
+        Session::put('car_id', $car_id);
+        return Redirect::to('/EditCarView');
+      }
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function InfoView ($car_id) {
+
+    if (Session::has('id', 'name', 'email')){
+      $car = \App\Car::find($car_id);
+      if($car->user_id == session('id')){
+        Session::put('car_id', $car_id);
+        return Redirect::to('/InfoCarView');
+      }
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function AddEdit (Request $request) {
 
     $formData = $request->all();
 
@@ -79,7 +120,7 @@ class CarController extends Controller
   }
 
 
-  public function SellCar (Request $request) {
+  public function Sell (Request $request) {
 
     $formData = $request->all();
 
@@ -109,7 +150,7 @@ class CarController extends Controller
     if($validator->passes()) {
 
       $car = new \App\Car;
-
+      
       if($car->saleCar($formData)){
 
         //it destroys $car object
@@ -127,8 +168,7 @@ class CarController extends Controller
   }
 
 
-
-  public function DeleteCar($car_id) {
+  public function Delete($car_id) {
 
     if (Session::has('id', 'name', 'email')){
       $car = \App\Car::find($car_id);
@@ -136,11 +176,9 @@ class CarController extends Controller
         \App\Car::destroy($car_id);
       }
     }
-    
+
     return Redirect::to('/');
   }
-
-
 
 
 }

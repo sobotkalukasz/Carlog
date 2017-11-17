@@ -9,6 +9,7 @@ use Redirect;
 
 class CarlogController extends Controller
 {
+
     public function home () {
 
       if (Session::has('id', 'name', 'email'))
@@ -16,7 +17,6 @@ class CarlogController extends Controller
 
       return view('login');
     }
-
 
 
     public function logout () {
@@ -28,165 +28,5 @@ class CarlogController extends Controller
       return Redirect::to('/');
     }
 
-
-
-    public function AddCarView () {
-
-      if (Session::has('id', 'name', 'email')){
-        if (session()->has('car_id')){
-          session()->forget('car_id');
-        }
-        return view('add_edit_car');
-      }
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function EditCarView ($car_id) {
-
-      if (Session::has('id', 'name', 'email')){
-        $car = \App\Car::find($car_id);
-        if($car->user_id == session('id')){
-          Session::put('car_id', $car_id);
-          return Redirect::to('/EditCarView');
-        }
-      }
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function InfoCarView ($car_id) {
-
-      if (Session::has('id', 'name', 'email')){
-        $car = \App\Car::find($car_id);
-        if($car->user_id == session('id')){
-          Session::put('car_id', $car_id);
-          return Redirect::to('/InfoCarView');
-        }
-      }
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function FuelView () {
-
-      if (Session::has('id', 'name', 'email'))
-        if(\App\User::hasActiveCars(session('id')))
-          return view('fuel');
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function ReminderView () {
-
-      if (Session::has('id', 'name', 'email'))
-        if(\App\User::hasActiveCars(session('id')))
-          return view('reminder');
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function ExpenseView () {
-
-      if (Session::has('id', 'name', 'email'))
-        if(\App\User::hasActiveCars(session('id')))
-          return view('expense');
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function ServiceView () {
-
-      if (Session::has('id', 'name', 'email'))
-        if(\App\User::hasActiveCars(session('id')))
-          return view('service');
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function EditFuelView ($fuel_id) {
-
-      if (Session::has('id', 'name', 'email')){
-
-        $fuel = \App\Fuel_expense::find($fuel_id);
-        $car = \App\Car::find($fuel->car_id);
-
-        if($car->user_id == session('id')){
-          Session::put('fuel_id', $fuel_id);
-          return Redirect::to('/EditFuelView');
-        }
-      }
-
-      return Redirect::to('/');
-    }
-
-
-
-
-    public function EditServiceView ($service_id) {
-
-      if (Session::has('id', 'name', 'email')){
-
-        $service = \App\Service::find($service_id);
-        $car = \App\Car::find($service->car_id);
-
-        if($car->user_id == session('id')){
-          Session::put('service_id', $service_id);
-          return Redirect::to('/EditServiceView');
-        }
-      }
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function EditReminderView ($reminder_id) {
-
-      if (Session::has('id', 'name', 'email')){
-
-        $reminder = \App\Reminder::find($reminder_id);
-        $car = \App\Car::find($reminder->car_id);
-
-        if($car->user_id == session('id')){
-          Session::put('reminder_id', $reminder_id);
-          return Redirect::to('/EditReminderView');
-        }
-      }
-
-      return Redirect::to('/');
-    }
-
-
-
-    public function EditExpenseView ($expense_id) {
-
-      if (Session::has('id', 'name', 'email')){
-
-        $expense = \App\Expense::find($expense_id);
-        $car = \App\Car::find($expense->car_id);
-
-        if($car->user_id == session('id')){
-          Session::put('expense_id', $expense_id);
-          return Redirect::to('/EditExpenseView');
-        }
-      }
-
-      return Redirect::to('/');
-    }
 
 }

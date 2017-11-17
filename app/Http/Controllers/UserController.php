@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Session;
 
 use Redirect;
 
-class LoginRegisterController extends Controller
+class UserController extends Controller
 {
     /*
     * This function validates data from login form and
