@@ -85,4 +85,11 @@ class Service extends Model
   }
 
 
+  public static function scopeGetByDate($query, $id){
+
+    return $query->whereCar_id($id)
+                  ->orderBy('date', 'desc');
+  }
+
+
 }

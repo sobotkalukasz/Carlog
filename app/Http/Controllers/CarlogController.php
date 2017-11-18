@@ -12,8 +12,12 @@ class CarlogController extends Controller
 
     public function home () {
 
-      if (Session::has('id', 'name', 'email'))
-        return view('home');
+      if (Session::has('id', 'name', 'email')){
+        $cars = \App\Car::whereUser_id(session('id'))->get();
+        $size = sizeof($cars);
+  
+        return view('home', compact('cars', 'size'));
+      }
 
       return view('login');
     }

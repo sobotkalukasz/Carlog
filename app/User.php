@@ -90,9 +90,9 @@ class User extends Model
   /*
   * it returns all user cars (by users ID)
   */
-  public static function getCars($id){
+  public function scopeGetCars($query, $id){
 
-    return \App\User::find($id)->cars;
+    return $query->find($id)->cars;
   }
 
 

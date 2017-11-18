@@ -25,11 +25,11 @@ Route::post('/RegisterFormValidation', 'UserController@RegisterFormValidation');
 
 //Car
 Route::get('/AddCar', 'CarController@View');
-Route::get('/EditCarById/{id}', 'CarController@EditView')->name('edit.car');
-Route::get('/EditCarView', function() {return view('add_edit_car');});
+Route::get('/EditCarById/{id}', 'CarController@Edit')->name('edit.car');
+Route::get('/EditCarView', 'CarController@EditView');
 Route::get('/DeleteCarById/{id}', 'CarController@Delete')->name('delete.car');
-Route::get('/InfoCarById/{id}', 'CarController@InfoView')->name('info.car');
-Route::get('/InfoCarView', function() {return view('info');});
+Route::get('/InfoCarById/{id}', 'CarController@Info')->name('info.car');
+Route::get('/InfoCarView', 'CarController@InfoView');
 Route::post('/AddEditCar', 'CarController@AddEdit');
 Route::post('/SellCar', 'CarController@Sell');
 

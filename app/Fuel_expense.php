@@ -117,9 +117,11 @@ class Fuel_expense extends Model
   }
 
 
+  public static function scopeGetByDate($query, $id){
 
-
-
+    return $query->whereCar_id($id)
+                  ->orderBy('date', 'desc');
+  }
 
 
 }

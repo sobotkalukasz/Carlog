@@ -8,11 +8,6 @@
 
 @section('body')
 
-  @php
-    $user = new \App\User;
-    $cars = $user->getCars(session('id'));
-    $size = sizeof($cars);
-  @endphp
 
   <div id="carsection">
 

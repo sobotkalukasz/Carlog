@@ -24,13 +24,12 @@ class CarController extends Controller
   }
 
 
-  public function EditView ($car_id) {
+  public function Edit ($car_id) {
 
     if (Session::has('id', 'name', 'email')){
       $car = \App\Car::find($car_id);
       if($car->user_id == session('id')){
-        Session::put('car_id', $car_id);
-        return Redirect::to('/EditCarView');
+        return Redirect::to('/EditCarView')->with('car_id', $car_id);
       }
     }
 
@@ -38,14 +37,60 @@ class CarController extends Controller
   }
 
 
-  public function InfoView ($car_id) {
+  public function EditView () {
+
+    if (Session::has('car_id')){
+
+      $car = \App\Car::find(session('car_id'));
+      session()->forget('car_id');
+
+      return view('add_edit_car', ['car' => $car]);
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function Info ($car_id) {
 
     if (Session::has('id', 'name', 'email')){
       $car = \App\Car::find($car_id);
       if($car->user_id == session('id')){
-        Session::put('car_id', $car_id);
-        return Redirect::to('/InfoCarView');
+        return Redirect::to('/InfoCarView')->with('car_id', $car_id);
       }
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function InfoView () {
+
+    if (Session::has('car_id')){
+
+      $car = \App\Car::find(session('car_id'));
+      $costs = \App\Car::getCosts(session('car_id'));
+
+      $fuel = \App\Fuel_expense::getByDate(session('car_id'))->get();
+      $f_size = sizeof($fuel);
+
+      $reminder = \App\Reminder::currentByDate($car->mileage_current)->get()->toArray();
+      $r_size = sizeof($reminder);
+      usort($reminder, 'sort_by_date');
+
+      $service = \App\Service::getByDate(session('car_id'))->get();
+      $s_size = sizeof($service);
+
+      $expense = \App\Expense::getByDate(session('car_id'))->get();
+      $e_size = sizeof($expense);
+
+      session()->forget('car_id');
+
+      return view('info', compact('car', 'costs',
+                                  'fuel', 'f_size',
+                                  'reminder', 'r_size',
+                                  'service', 's_size',
+                                  'expense', 'e_size'));
     }
 
     return Redirect::to('/');
@@ -150,7 +195,7 @@ class CarController extends Controller
     if($validator->passes()) {
 
       $car = new \App\Car;
-      
+
       if($car->saleCar($formData)){
 
         //it destroys $car object

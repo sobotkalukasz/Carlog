@@ -132,4 +132,25 @@ class Car extends Model
   }
 
 
+  public static function getCosts($id){
+
+    $car = \App\Car::find($id);
+
+    return array(
+        "total" => $car->spendings_fuel + $car->spendings_service +$car->spendings_others,
+        "total_car" => $car->spendings_fuel + $car->spendings_service
+        + $car->spendings_others + $car->purchase_price - $car->sale_price
+    );
+  }
+
+
+  /*
+  * it returns all user cars (by users ID)
+  */
+  public function scopeMenuCars($query, $id){
+
+    return $query->whereUser_id($id);
+  }
+
+
 }

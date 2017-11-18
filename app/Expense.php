@@ -82,4 +82,10 @@ class Expense extends Model
   }
 
 
+  public function scopeGetByDate($query, $id){
+
+    return $query->whereCar_id($id)
+                  ->orderBy('date', 'desc');        
+  }
+
 }

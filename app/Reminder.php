@@ -39,7 +39,7 @@ class Reminder extends Model
       $reminder = new \App\Reminder;
       $reminder->car_id = $formData['car_id'];
     }
-    
+
     $reminder->date = $formData['reminder_date'];
     $reminder->mileage = $formData['reminder_mileage'];
     $reminder->comment = $formData['reminder_comment'];
@@ -58,24 +58,19 @@ class Reminder extends Model
 
 
 
-  public static function currentReminders($mileage){
+  public static function scopeCurrentByDate($querys, $mileage){
 
 
-    $reminders = \App\Reminder::whereCar_id(session('car_id'))
-                                      ->where(function($query) use ($mileage){
-                                        $query->where('mileage', '>', $mileage)
-                                              ->orWhereNull('mileage');
-
-                                      })
-                                      ->where(function($query){
-                                        $query->whereDate('date', '>=', date('Y-m-d'))
-                                              ->orWhereNull('date');
-
-                                      })
-                                      ->orderBy('date')
-                                      ->get()->toArray();
-    return $reminders;
-
+      return $querys->whereCar_id(session('car_id'))
+                    ->where(function($query) use ($mileage){
+                            $query->where('mileage', '>', $mileage)
+                                  ->orWhereNull('mileage');
+                            })
+                    ->where(function($query){
+                            $query->whereDate('date', '>=', date('Y-m-d'))
+                                  ->orWhereNull('date');
+                            })
+                    ->orderBy('date');
   }
 
 

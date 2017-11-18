@@ -9,16 +9,9 @@
 @section('body')
 
 
-@php
-  if(session()->has('car_id')){
-    $car = new \App\Car;
-    $car = $car->getCarById(session('car_id'));}
-
-@endphp
-
 <div class="carform">
     <h1>
-      @if(session()->has('car_id'))
+      @if(isset($car))
           edycja pojazdu
       @else
           dodaj nowy samochód
@@ -33,8 +26,8 @@
 
       {{-- If editing existing fuel entry it creates hidden input field with it id --}}
 
-      @if(session()->has('car_id'))
-        <input type="hidden" name="car_id" value="{{ session('car_id') }}">
+      @if(isset($car))
+        <input type="hidden" name="car_id" value="{{ $car->id }}">
       @endif
 
 
@@ -46,8 +39,8 @@
               @if (session()->has('make'))
                   value="{{ session('make') }}"
                   @php Session::forget('make') @endphp
-              @elseif (session()->has('car_id') && $car[0]->make)
-                value="{{ $car[0]->make }}"
+              @elseif (isset($car) && $car->make)
+                value="{{ $car->make }}"
               @endif >
       </div>
 
@@ -67,8 +60,8 @@
               @if (session()->has('model'))
                   value="{{ session('model') }}"
                   @php Session::forget('model') @endphp
-                  @elseif (session()->has('car_id') && $car[0]->model)
-                    value="{{ $car[0]->model }}"
+                @elseif (isset($car) && $car->model)
+                    value="{{ $car->model }}"
               @endif >
       </div>
 
@@ -89,8 +82,8 @@
               @if (session()->has('production_year'))
                   value="{{ session('production_year') }}"
                   @php Session::forget('production_year') @endphp
-                  @elseif (session()->has('car_id') && $car[0]->production_year)
-                    value="{{ $car[0]->production_year }}"
+                @elseif (isset($car) && $car->production_year)
+                    value="{{ $car->production_year }}"
               @endif >
       </div>
 
@@ -110,8 +103,8 @@
               @if (session()->has('engine'))
                   value="{{ session('engine') }}"
                   @php Session::forget('engine') @endphp
-              @elseif (session()->has('car_id') && ($car[0]->engine))
-                    value="{{ $car[0]->engine }}"
+              @elseif (isset($car) && ($car->engine))
+                    value="{{ $car->engine }}"
               @endif >
       </div>
 
@@ -132,8 +125,8 @@
               @if (session()->has('hp'))
                   value="{{ session('hp') }}"
                   @php Session::forget('hp') @endphp
-                  @elseif (session()->has('car_id') && $car[0]->hp)
-                    value="{{ $car[0]->hp }}"
+              @elseif (isset($car) && $car->hp)
+                    value="{{ $car->hp }}"
               @endif >
       </div>
 
@@ -152,8 +145,8 @@
               @if (session()->has('mileage_start'))
                   value="{{ session('mileage_start') }}"
                   @php Session::forget('mileage_start') @endphp
-                  @elseif (session()->has('car_id') && $car[0]->mileage_start)
-                    value="{{ $car[0]->mileage_start }}"
+              @elseif (isset($car) && $car->mileage_start)
+                    value="{{ $car->mileage_start }}"
               @endif >
       </div>
 
@@ -172,8 +165,8 @@
               @if (session()->has('mileage_current'))
                   value="{{ session('mileage_current') }}"
                   @php Session::forget('mileage_current') @endphp
-              @elseif (session()->has('car_id') && $car[0]->mileage_current)
-                  value="{{ $car[0]->mileage_current }}"
+              @elseif (isset($car) && $car->mileage_current)
+                  value="{{ $car->mileage_current }}"
               @endif >
       </div>
 
@@ -192,7 +185,7 @@
 
         <div class="radioFuel">
           <lable><input type="radio" name="fuel" value="LPG"
-            @if(session()->has('car_id') && $car[0]->fuel == 'LPG')
+            @if(isset($car) && $car->fuel == 'LPG')
               checked
             @endif
             ><span>LPG</span></lable>
@@ -200,7 +193,7 @@
 
         <div class="radioFuel">
           <lable><input type="radio" name="fuel" value="ON"
-            @if(session()->has('car_id') && $car[0]->fuel == 'ON')
+            @if(isset($car) && $car->fuel == 'ON')
               checked
             @endif
             ><span>ON</span></lable>
@@ -208,8 +201,8 @@
 
         <div class="radioFuel">
           <lable><input type="radio" name="fuel" value="PB"
-            @if(session()->has('car_id'))
-              @if ($car[0]->fuel == 'PB')
+            @if(isset($car))
+              @if ($car->fuel == 'PB')
                 checked
               @endif
             @else
@@ -234,8 +227,8 @@
                 @if (session()->has('purchase_date'))
                     value="{{ session('purchase_date') }}"
                     @php Session::forget('purchase_date') @endphp
-                @elseif (session()->has('car_id') && $car[0]->purchase_date)
-                    value="{{ $car[0]->purchase_date }}"
+                @elseif (isset($car) && $car->purchase_date)
+                    value="{{ $car->purchase_date }}"
                 @endif >
             </div>
 
@@ -245,8 +238,8 @@
                     @if (session()->has('purchase_price'))
                         value="{{ session('purchase_price') }}"
                         @php Session::forget('purchase_price') @endphp
-                    @elseif (session()->has('car_id') && $car[0]->purchase_price)
-                        value="{{ $car[0]->purchase_price }}"
+                    @elseif (isset($car) && $car->purchase_price)
+                        value="{{ $car->purchase_price }}"
                     @endif >
             </div>
 
@@ -271,7 +264,7 @@
 
       <div class="submitdiv">
           <input type="submit" class="submit"
-              @if(session()->has('car_id'))
+              @if(isset($car))
                 value="zapisz zmiany"
               @else
                 value="dodaj pojazd"
