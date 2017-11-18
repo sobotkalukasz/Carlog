@@ -52,15 +52,15 @@ Route::post('/AddEditService', 'ServiceController@AddEdit');
 
 //Reminder
 Route::get('/Reminder', 'ReminderController@View');
-Route::get('/EditReminderById/{id}', 'ReminderController@EditView')->name('edit.reminder');
-Route::get('/EditReminderView', function() {return view('reminder');});
+Route::get('/EditReminderById/{id}', 'ReminderController@Edit')->name('edit.reminder');
+Route::get('/EditReminderView', 'ReminderController@EditView');
 Route::get('/DeleteReminderById/{id}', 'ReminderController@Delete')->name('delete.reminder');
 Route::post('/AddEditReminder', 'ReminderController@AddEdit');
 
 
 //Expense
 Route::get('/Expense', 'ExpenseController@View');
-Route::get('/EditExpenseById/{id}', 'ExpenseController@EditView')->name('edit.expense');
-Route::get('/EditExpenseView', function() {return view('expense');});
+Route::get('/EditExpenseById/{id}', 'ExpenseController@Edit')->name('edit.expense');
+Route::get('/EditExpenseView', 'ExpenseController@EditView');
 Route::get('/DeleteExpenseById/{id}', 'ExpenseController@Delete')->name('delete.expense');
 Route::post('/AddEditExpense', 'ExpenseController@AddEdit');

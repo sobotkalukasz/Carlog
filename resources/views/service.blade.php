@@ -315,12 +315,6 @@
           </div>
 
 
-          {{-- Deletes service_id from session() --}}
-
-          @if(session()->has('service_id'))
-            @php session()->forget('service_id') @endphp
-          @endif
-
 
         <div style="clear:both;"></div>
     </form>

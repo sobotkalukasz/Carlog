@@ -8,21 +8,11 @@
 
 @section('body')
 
-  @php
-    $user = new \App\User;
-    $cars = $user->getCars(session('id'))->toArray();
-
-    if(session()->has('expense_id')){
-      $expense = \App\Expense::whereId(session('expense_id'))->get()->toArray();
-      //return var_dump($expense);
-    };
-
-  @endphp
 
   <div class="carform">
 
     <h1>
-      @if(session()->has('expense_id'))
+      @if(isset($expense))
         edycja wpisu
       @else
         dodaj nowy wydatek
@@ -38,8 +28,8 @@
 
       {{-- If editing existing expense entry it creates hidden input field with its id --}}
 
-      @if(session()->has('expense_id'))
-        <input type="hidden" name="expense_id" value="{{ session('expense_id') }}">
+      @if(isset($expense))
+        <input type="hidden" name="expense_id" value="{{ $expense->id }}">
       @endif
 
 
@@ -50,15 +40,15 @@
 
             <div class="select">
               <select id="car_id" name="car_id">
-                @for ($i=0; $i < sizeof($cars); $i++)
-                    @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}"
-                        @if (session()->has('expense_id') && ($cars[$i]['id'] == $expense[0]['car_id']))
-                          selected
-                        @endif
-                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
-                    @endif
-                @endfor
+                @foreach ($cars as $car)
+                  @if($car->sale_date === NULL)
+                    <option value ="{{ $car->id }}"
+                      @if (isset($expense) && ($car->id == $expense->car_id))
+                        selected
+                      @endif
+                    >{{ $car->make." ".$car->model  }}</option>
+                  @endif
+                @endforeach
               </select>
             </div>
             <div style="clear:both;"></div>
@@ -75,8 +65,8 @@
                     @if (session()->has('expense_date'))
                         value="{{ session('expense_date') }}"
                         @php Session::forget('expense_date') @endphp
-                    @elseif (session()->has('expense_id') && $expense[0]['date'])
-                        value="{{ $expense[0]['date'] }}"
+                    @elseif (isset($expense) && $expense->date)
+                        value="{{ $expense->date }}"
                     @endif >
                 </div>
 
@@ -101,8 +91,8 @@
                   @if (session()->has('expense_description'))
                       value="{{ session('expense_description') }}"
                       @php Session::forget('expense_description') @endphp
-                  @elseif (session()->has('expense_id') && $expense[0]['description'])
-                      value="{{ $expense[0]['description'] }}"
+                  @elseif (isset($expense) && $expense->description)
+                      value="{{ $expense->description }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -124,8 +114,8 @@
                   @if (session()->has('expense_price'))
                       value="{{ session('expense_price') }}"
                       @php Session::forget('expense_prica') @endphp
-                  @elseif (session()->has('expense_id') && $expense[0]['price'])
-                      value="{{ $expense[0]['price'] }}"
+                  @elseif (isset($expense) && $expense->price)
+                      value="{{ $expense->price }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -153,9 +143,9 @@
           <input type="hidden" id="text1"
           @if (session()->has('expense_comment'))
               {{  'value=1' }}
-          @elseif (session()->has('expense_id') && $expense[0]['comment'])
+          @elseif (isset($expense) && $expense->comment)
               {{  'value=1' }}
-              @php session()->put('expense_comment', $expense[0]['comment']); @endphp
+              @php session()->put('expense_comment', $expense->comment); @endphp
           @endif>
 
 

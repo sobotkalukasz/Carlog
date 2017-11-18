@@ -13,14 +13,16 @@ class ExpenseController extends Controller
   public function View () {
 
     if (Session::has('id', 'name', 'email'))
-      if(\App\User::hasActiveCars(session('id')))
-        return view('expense');
+      if(\App\User::hasActiveCars(session('id'))){
+        $cars = \App\Car::whereUser_id(session('id'))->get();
+        return view('expense', ['cars' => $cars]);
+      }
 
     return Redirect::to('/');
   }
 
 
-  public function EditView ($expense_id) {
+  public function Edit ($expense_id) {
 
     if (Session::has('id', 'name', 'email')){
 
@@ -28,9 +30,23 @@ class ExpenseController extends Controller
       $car = \App\Car::find($expense->car_id);
 
       if($car->user_id == session('id')){
-        Session::put('expense_id', $expense_id);
-        return Redirect::to('/EditExpenseView');
+        return Redirect::to('/EditExpenseView')->with('expense_id', $expense_id);
       }
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function EditView () {
+
+    if (Session::has('expense_id')){
+
+      $cars = \App\Car::whereUser_id(session('id'))->get();
+      $expense = \App\Expense::find(session('expense_id'));
+      session()->forget('expense_id');
+
+      return view('expense', compact('cars', 'expense'));
     }
 
     return Redirect::to('/');
@@ -177,5 +193,5 @@ class ExpenseController extends Controller
     return Redirect::to('/');
   }
 
-  
+
 }

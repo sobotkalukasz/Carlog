@@ -8,21 +8,11 @@
 
 @section('body')
 
-  @php
-    $user = new \App\User;
-    $cars = $user->getCars(session('id'))->toArray();
-
-    if(session()->has('reminder_id')){
-      $reminder = \App\Reminder::whereId(session('reminder_id'))->get()->toArray();
-      //return var_dump($reminder);
-    };
-
-  @endphp
 
   <div class="carform">
 
     <h1>
-      @if(session()->has('reminder_id'))
+      @if(isset($reminder))
         edycja przypomnienia
       @else
         dodaj nowe przypomnienie
@@ -39,8 +29,8 @@
 
       {{-- If editing existing reminder entry it creates hidden input field with its id --}}
 
-      @if(session()->has('reminder_id'))
-        <input type="hidden" name="reminder_id" value="{{ session('reminder_id') }}">
+      @if(isset($reminder))
+        <input type="hidden" name="reminder_id" value="{{ $reminder->id }}">
       @endif
 
 
@@ -52,15 +42,15 @@
 
             <div class="select">
               <select id="car_id" name="car_id">
-                @for ($i=0; $i < sizeof($cars); $i++)
-                    @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}"
-                          @if (session()->has('reminder_id') && ($cars[$i]['id'] == $reminder[0]['car_id']))
-                            selected
-                            @endif
-                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
-                    @endif
-                @endfor
+                @foreach ($cars as $car)
+                  @if($car->sale_date === NULL)
+                    <option value ="{{ $car->id }}"
+                      @if (isset($reminder) && ($car->id == $reminder->car_id))
+                        selected
+                      @endif
+                    >{{ $car->make." ".$car->model  }}</option>
+                  @endif
+                @endforeach
               </select>
             </div>
             <div style="clear:both;"></div>
@@ -77,8 +67,8 @@
                     @if (session()->has('reminder_date'))
                         value="{{ session('reminder_date') }}"
                         @php Session::forget('reminder_date') @endphp
-                    @elseif (session()->has('reminder_id') && $reminder[0]['date'])
-                        value="{{ $reminder[0]['date'] }}"
+                    @elseif (isset($reminder) && $reminder->date)
+                        value="{{ $reminder->date }}"
                     @endif >
                 </div>
 
@@ -104,8 +94,8 @@
                   @if (session()->has('reminder_mileage'))
                       value="{{ session('reminder_mileage') }}"
                       @php Session::forget('reminder_mileage') @endphp
-                  @elseif (session()->has('reminder_id') && $reminder[0]['mileage'])
-                      value="{{ $reminder[0]['mileage'] }}"
+                  @elseif (isset($reminder) && $reminder->mileage)
+                      value="{{ $reminder->mileage }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -133,9 +123,9 @@
           <input type="hidden" id="text"
           @if (session()->has('reminder_comment'))
               {{  'value=1' }}
-          @elseif (session()->has('reminder_id') && $reminder[0]['comment'])
+          @elseif (isset($reminder) && $reminder->comment)
               {{  'value=1' }}
-              @php session()->put('reminder_comment', $reminder[0]['comment']); @endphp
+              @php session()->put('reminder_comment', $reminder->comment); @endphp
           @endif>
 
 
@@ -156,19 +146,12 @@
 
           <div class="submitdiv">
               <input type="submit" class="submit"
-              @if(session()->has('reminder_id'))
+              @if(isset($reminder))
                 value="zapisz zmiany"
               @else
                 value="dodaj przypomnienie"
               @endif >
           </div>
-
-
-          {{-- Deletes reminder_id from session() --}}
-
-          @if(session()->has('reminder_id'))
-            @php session()->forget('reminder_id') @endphp
-          @endif
 
 
         <div style="clear:both;"></div>

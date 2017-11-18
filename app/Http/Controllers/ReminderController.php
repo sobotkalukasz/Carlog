@@ -13,14 +13,16 @@ class ReminderController extends Controller
   public function View () {
 
     if (Session::has('id', 'name', 'email'))
-      if(\App\User::hasActiveCars(session('id')))
-        return view('reminder');
+      if(\App\User::hasActiveCars(session('id'))){
+        $cars = \App\Car::whereUser_id(session('id'))->get();
+        return view('reminder', ['cars' => $cars]);
+      }
 
     return Redirect::to('/');
   }
 
 
-  public function EditView ($reminder_id) {
+  public function Edit ($reminder_id) {
 
     if (Session::has('id', 'name', 'email')){
 
@@ -28,9 +30,23 @@ class ReminderController extends Controller
       $car = \App\Car::find($reminder->car_id);
 
       if($car->user_id == session('id')){
-        Session::put('reminder_id', $reminder_id);
-        return Redirect::to('/EditReminderView');
+        return Redirect::to('/EditReminderView')->with('reminder_id', $reminder_id);
       }
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function EditView () {
+
+    if (Session::has('reminder_id')){
+
+      $cars = \App\Car::whereUser_id(session('id'))->get();
+      $reminder = \App\Reminder::find(session('reminder_id'));
+      session()->forget('reminder_id');
+
+      return view('reminder', compact('cars', 'reminder'));
     }
 
     return Redirect::to('/');
