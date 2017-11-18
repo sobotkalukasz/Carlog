@@ -8,20 +8,11 @@
 
 @section('body')
 
-  @php
-    $user = new \App\User;
-    $cars = $user->getCars(session('id'))->toArray();
-
-    if(session()->has('service_id')){
-      $service = \App\Service::whereId(session('service_id'))->get()->toArray();
-      //return var_dump($service);
-    };
-  @endphp
 
   <div class="carform">
 
     <h1>
-      @if(session()->has('service_id'))
+      @if(isset($service))
         edycja wpisu serwisowego
       @else
         dodaj nowy wydatek serwisowy
@@ -38,8 +29,8 @@
 
       {{-- If editing existing fuel entry it creates hidden input field with its id --}}
 
-      @if(session()->has('service_id'))
-        <input type="hidden" name="service_id" value="{{ session('service_id') }}">
+      @if(isset($service))
+        <input type="hidden" name="service_id" value="{{ $service->id }}">
       @endif
 
 
@@ -52,15 +43,15 @@
 
             <div class="select">
               <select id="car_id" name="car_id">
-                @for ($i=0; $i < sizeof($cars); $i++)
-                    @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}"
-                          @if (session()->has('service_id') && ($cars[$i]['id'] == $service[0]['car_id']))
-                            selected
-                          @endif
-                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
-                    @endif
-                @endfor
+                @foreach ($cars as $car)
+                  @if($car->sale_date === NULL)
+                    <option value ="{{ $car->id }}"
+                      @if (isset($service) && ($car->id == $service->car_id))
+                        selected
+                      @endif
+                    >{{ $car->make." ".$car->model  }}</option>
+                  @endif
+                @endforeach
               </select>
             </div>
             <div style="clear:both;"></div>
@@ -77,8 +68,8 @@
                     @if (session()->has('service_date'))
                         value="{{ session('service_date') }}"
                         @php Session::forget('service_date') @endphp
-                    @elseif (session()->has('service_id') && $service[0]['date'])
-                        value="{{ $service[0]['date'] }}"
+                    @elseif (isset($service) && $service->date)
+                        value="{{ $service->date }}"
                     @endif >
                 </div>
 
@@ -102,8 +93,8 @@
                   @if (session()->has('service_mileage'))
                       value="{{ session('service_mileage') }}"
                       @php Session::forget('service_mileage') @endphp
-                  @elseif (session()->has('service_id') && $service[0]['mileage'])
-                      value="{{ $service[0]['mileage'] }}"
+                  @elseif (isset($service) && $service->mileage)
+                      value="{{ $service->mileage }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -125,8 +116,8 @@
                   @if (session()->has('service_description'))
                       value="{{ session('service_description') }}"
                       @php Session::forget('service_description') @endphp
-                  @elseif (session()->has('service_id') && $service[0]['description'])
-                      value="{{ $service[0]['description'] }}"
+                  @elseif (isset($service) && $service->description)
+                      value="{{ $service->description }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -147,8 +138,8 @@
                   @if (session()->has('service_price_parts'))
                       value="{{ session('service_price_parts') }}"
                       @php Session::forget('service_price_parts') @endphp
-                  @elseif (session()->has('service_id') && $service[0]['price_parts'])
-                      value="{{ $service[0]['price_parts'] }}"
+                  @elseif (isset($service) && $service->price_parts)
+                      value="{{ $service->price_parts }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -169,8 +160,8 @@
                   @if (session()->has('service_price_labour'))
                       value="{{ session('service_price_labour') }}"
                       @php Session::forget('service_price_labour') @endphp
-                  @elseif (session()->has('service_id') && $service[0]['price_labour'])
-                      value="{{ $service[0]['price_labour'] }}"
+                  @elseif (isset($service) && $service->price_labour)
+                      value="{{ $service->price_labour }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -191,8 +182,8 @@
                   @if (session()->has('service_price_total'))
                       value="{{ session('service_price_total') }}"
                       @php Session::forget('service_price_total') @endphp
-                  @elseif (session()->has('service_id') && $service[0]['price_total'])
-                      value="{{ $service[0]['price_total'] }}"
+                  @elseif (isset($service) && $service->price_total)
+                      value="{{ $service->price_total }}"
                   @endif >
               <div class="calc"><i onclick="calculate()"class="icon-calc"></i></div>
               <div style="clear:both;"></div>
@@ -219,9 +210,9 @@
           <input type="hidden" id="text1"
           @if (session()->has('service_comment'))
               {{  'value=1' }}
-          @elseif (session()->has('service_id') && $service[0]['comment'])
+          @elseif (isset($service) && $service->comment)
               {{  'value=1' }}
-              @php session()->put('service_comment', $service[0]['comment']); @endphp
+              @php session()->put('service_comment', $service->comment); @endphp
           @endif>
 
 

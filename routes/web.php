@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Redirect;
 Route::get('/', 'CarlogController@home');
 Route::get('/Logout', 'CarlogController@logout');
 
+
 //User
 Route::post('/LoginFormValidation', 'UserController@LoginFormValidation');
 Route::post('/RegisterFormValidation', 'UserController@RegisterFormValidation');
@@ -36,15 +37,15 @@ Route::post('/SellCar', 'CarController@Sell');
 //Fuel
 Route::get('/Fuel', 'Fuel_expenseController@View');
 Route::get('/EditFuelById/{id}', 'Fuel_expenseController@Edit')->name('edit.fuel');
-Route::get('/EditFuelView', function() {return view('fuel');});
+Route::get('/EditFuelView', 'Fuel_expenseController@EditView');
 Route::get('/DeleteFuelById/{id}', 'Fuel_expenseController@Delete')->name('delete.fuel');
 Route::post('/AddEditFuel', 'Fuel_expenseController@AddEdit');
 
 
 //Service
 Route::get('/Service', 'ServiceController@View');
-Route::get('/EditServiceById/{id}', 'ServiceController@EditView')->name('edit.service');
-Route::get('/EditServiceView', function() {return view('service');});
+Route::get('/EditServiceById/{id}', 'ServiceController@Edit')->name('edit.service');
+Route::get('/EditServiceView', 'ServiceController@EditView');
 Route::get('/DeleteServiceById/{id}', 'ServiceController@Delete')->name('delete.service');
 Route::post('/AddEditService', 'ServiceController@AddEdit');
 

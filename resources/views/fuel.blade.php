@@ -8,20 +8,11 @@
 
 @section('body')
 
-  @php
-    $cars = (\App\User::getCars(session('id')))->toArray();
-
-    if(session()->has('fuel_id')){
-      $fuel = \App\Fuel_expense::whereId(session('fuel_id'))->get()->toArray();
-      //return var_dump($fuel);
-    }
-
-  @endphp
 
   <div class="carform">
 
     <h1>
-      @if(session()->has('fuel_id'))
+      @if(isset($fuel))
         edycja wpisu paliwowego
       @else
         dodaj nowy wpis paliwowy
@@ -31,15 +22,17 @@
     <form action="{{ url('AddEditFuel') }}" method="post">
 
 
+
       {{-- If editing existing fuel entry it creates hidden input field with it id --}}
 
-      @if(session()->has('fuel_id'))
-        <input type="hidden" name="fuel_id" value="{{ session('fuel_id') }}">
+      @if(isset($fuel))
+        <input type="hidden" name="fuel_id" value="{{ $fuel->id }}">
       @endif
 
 
+
       {{-- CSRF Token.---------------------}}
-      {!! csrf_field() !!}
+      {{ csrf_field() }}
 
       {{-- Select div - Car selection --}}
 
@@ -48,21 +41,19 @@
 
             <div class="select">
               <select id="car_id" name="car_id">
-                @for ($i=0; $i < sizeof($cars); $i++)
-                    @if ($cars[$i]['sale_date'] === NULL)
-                        <option value ="{{ $cars[$i]['id'] }}"
-                          @if (session()->has('fuel_id') && ($cars[$i]['id'] == $fuel[0]['car_id']))
-                            selected
-                          @endif
-                        >{{ $cars[$i]['make']." ".$cars[$i]['model']  }}</option>
-                    @endif
-                @endfor
+                @foreach ($cars as $car)
+                  @if($car->sale_date === NULL)
+                    <option value ="{{ $car->id }}"
+                      @if (isset($fuel) && ($car->id == $fuel->car_id))
+                        selected
+                      @endif
+                    >{{ $car->make." ".$car->model  }}</option>
+                  @endif
+                @endforeach
               </select>
             </div>
             <div style="clear:both;"></div>
         </div>
-
-
 
 
 
@@ -73,22 +64,22 @@
 
             <div class="radioFuel">
                 <lable><input type="radio" name="fuel" value="LPG"
-                  @if (session()->has('fuel_id') && ($fuel[0]['fuel'] == 'LPG'))
+                  @if (isset($fuel) && ($fuel->fuel == 'LPG'))
                     checked
                   @endif><span>LPG</span></lable>
             </div>
 
             <div class="radioFuel">
                 <lable><input type="radio" name="fuel" value="ON"
-                  @if (session()->has('fuel_id') && ($fuel[0]['fuel'] == 'ON'))
+                  @if (isset($fuel) && ($fuel->fuel == 'ON'))
                     checked
                   @endif><span>ON</span></lable>
             </div>
 
             <div class="radioFuel">
                 <lable><input type="radio" name="fuel" value="PB"
-                  @if (session()->has('fuel_id'))
-                    @if ($fuel[0]['fuel'] == 'PB')
+                  @if (isset($fuel))
+                    @if ($fuel->fuel == 'PB')
                       checked
                     @endif
                   @else
@@ -110,8 +101,8 @@
                     @if (session()->has('date'))
                         value="{{ session('date') }}"
                         @php Session::forget('date') @endphp
-                    @elseif (session()->has('fuel_id') && $fuel[0]['date'])
-                        value="{{ $fuel[0]['date'] }}"
+                    @elseif (isset($fuel) && $fuel->date)
+                        value="{{ $fuel->date }}"
                     @endif >
                 </div>
 
@@ -137,8 +128,8 @@
                   @if (session()->has('litres'))
                       value="{{ session('litres') }}"
                       @php Session::forget('litres') @endphp
-                  @elseif (session()->has('fuel_id') && $fuel[0]['litres'])
-                      value="{{ $fuel[0]['litres'] }}"
+                  @elseif (isset($fuel) && $fuel->litres)
+                      value="{{ $fuel->litres }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -161,8 +152,8 @@
                   @if (session()->has('price_all'))
                       value="{{ session('price_all') }}"
                       @php Session::forget('price_all') @endphp
-                  @elseif (session()->has('fuel_id') && $fuel[0]['price_all'])
-                      value="{{ $fuel[0]['price_all'] }}"
+                  @elseif (isset($fuel) && $fuel->price_all)
+                      value="{{ $fuel->price_all }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -184,8 +175,8 @@
                   @if (session()->has('price_l'))
                       value="{{ session('price_l') }}"
                       @php Session::forget('price_l') @endphp
-                  @elseif (session()->has('fuel_id') && $fuel[0]['price_l'])
-                      value="{{ $fuel[0]['price_l'] }}"
+                  @elseif (isset($fuel) && $fuel->price_l)
+                      value="{{ $fuel->price_l }}"
                   @endif >
               <div class="calc"><i onclick="calculate()"class="icon-calc"></i></div>
               <div style="clear:both;"></div>
@@ -208,8 +199,8 @@
                   @if (session()->has('mileage_current'))
                       value="{{ session('mileage_current') }}"
                       @php Session::forget('mileage_current') @endphp
-                  @elseif (session()->has('fuel_id') && $fuel[0]['mileage_current'])
-                      value="{{ $fuel[0]['mileage_current'] }}"
+                  @elseif (isset($fuel) && $fuel->mileage_current)
+                      value="{{ $fuel->mileage_current }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -231,8 +222,8 @@
                   @if (session()->has('distance'))
                       value="{{ session('distance') }}"
                       @php Session::forget('distance') @endphp
-                  @elseif (session()->has('fuel_id') && $fuel[0]['distance'])
-                      value="{{ $fuel[0]['distance'] }}"
+                  @elseif (isset($fuel)&& $fuel->distance)
+                      value="{{ $fuel->distance }}"
                   @endif >
               <div class="calc"><i onclick="avgCons()"class="icon-calc"></i></div>
               <div style="clear:both;"></div>
@@ -254,8 +245,8 @@
                   @if (session()->has('fuel_consumption'))
                       value="{{ session('fuel_consumption') }}"
                       @php Session::forget('fuel_consumption') @endphp
-                  @elseif (session()->has('fuel_id') && $fuel[0]['fuel_consumption'])
-                      value="{{ $fuel[0]['fuel_consumption'] }}"
+                  @elseif (isset($fuel) && $fuel->fuel_consumption)
+                      value="{{ $fuel->fuel_consumption }}"
                   @endif >
               <div style="clear:both;"></div>
           </div>
@@ -279,13 +270,6 @@
                 value="dodaj wpis"
               @endif >
           </div>
-
-
-          {{-- Deletes fuel_id from session() --}}
-
-          @if(session()->has('fuel_id'))
-            @php session()->forget('fuel_id') @endphp
-          @endif
 
 
         <div style="clear:both;"></div>

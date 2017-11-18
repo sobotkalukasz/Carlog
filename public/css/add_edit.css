@@ -24,7 +24,15 @@
   margin-top: 20px;
 }
 
-.inputdivs > h2{
+label > h2{
+  margin-top: 0;
+  margin-bottom: 0px;
+  font-size: 20px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.inputdivs >  h2{
   margin-top: 0;
   margin-bottom: 0px;
   font-size: 20px;

@@ -14,13 +14,14 @@ class ServiceController extends Controller
 
     if (Session::has('id', 'name', 'email'))
       if(\App\User::hasActiveCars(session('id')))
-        return view('service');
+        $cars = \App\Car::whereUser_id(session('id'))->get();
+        return view('service', ['cars' => $cars]);
 
     return Redirect::to('/');
   }
 
 
-  public function EditView ($service_id) {
+  public function Edit ($service_id) {
 
     if (Session::has('id', 'name', 'email')){
 
@@ -28,9 +29,23 @@ class ServiceController extends Controller
       $car = \App\Car::find($service->car_id);
 
       if($car->user_id == session('id')){
-        Session::put('service_id', $service_id);
-        return Redirect::to('/EditServiceView');
+        return Redirect::to('/EditServiceView')->with('service_id', $service_id);
       }
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function EditView () {
+
+    if (Session::has('service_id')){
+
+      $cars = \App\Car::whereUser_id(session('id'))->get();
+      $service = \App\Service::find(session('service_id'));
+      session()->forget('service_id');
+    
+      return view('service', compact('cars', 'service'));
     }
 
     return Redirect::to('/');

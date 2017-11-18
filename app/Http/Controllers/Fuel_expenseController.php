@@ -13,8 +13,10 @@ class Fuel_expenseController extends Controller
   public function View () {
 
     if (Session::has('id', 'name', 'email'))
-      if(\App\User::hasActiveCars(session('id')))
-        return view('fuel');
+      if(\App\User::hasActiveCars(session('id'))){
+        $cars = \App\Car::whereUser_id(session('id'))->get();
+        return view('fuel', ['cars' => $cars]);
+      }
 
     return Redirect::to('/');
   }
@@ -28,9 +30,23 @@ class Fuel_expenseController extends Controller
       $car = \App\Car::find($fuel->car_id);
 
       if($car->user_id == session('id')){
-        Session::put('fuel_id', $fuel_id);
-        return Redirect::to('/EditFuelView');
+        return Redirect::to('/EditFuelView')->with('fuel_id', $fuel_id);
       }
+    }
+
+    return Redirect::to('/');
+  }
+
+
+  public function EditView () {
+
+    if (Session::has('fuel_id')){
+
+      $cars = \App\Car::whereUser_id(session('id'))->get();
+      $fuel = \App\Fuel_expense::find(session('fuel_id'));
+      session()->forget('fuel_id');
+
+      return view('fuel', compact('cars', 'fuel'));
     }
 
     return Redirect::to('/');
@@ -138,7 +154,6 @@ class Fuel_expenseController extends Controller
 
     return Redirect::to('/');
   }
-
 
 
 }

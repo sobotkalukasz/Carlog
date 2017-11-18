@@ -28,7 +28,7 @@
     <form action="{{ url('AddEditCar') }}" method="post">
 
       {{-- CSRF Token.---------------------}}
-      {!! csrf_field() !!}
+      {{ csrf_field() }}
 
 
       {{-- If editing existing fuel entry it creates hidden input field with it id --}}

@@ -37,3 +37,5 @@
     <li>{{ Html::linkAction('CarlogController@logout','Wyloguj mnie') }}</li>
   </ol>
 </div>
+
+@php if (isset($cars)) unset($cars); @endphp
