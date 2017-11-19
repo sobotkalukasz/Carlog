@@ -12,7 +12,7 @@ class ExpenseController extends Controller
 
   public function View () {
 
-    if (Session::has('id', 'name', 'email'))
+    if (Session::has('id'))
       if(\App\User::hasActiveCars(session('id'))){
         $cars = \App\Car::whereUser_id(session('id'))->get();
         return view('expense', ['cars' => $cars]);
@@ -24,7 +24,7 @@ class ExpenseController extends Controller
 
   public function Edit ($expense_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
       $expense = \App\Expense::find($expense_id);
       $car = \App\Car::find($expense->car_id);
@@ -161,7 +161,7 @@ class ExpenseController extends Controller
 
   public function Delete($expense_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
       $expense = \App\Expense::find($expense_id);
       $car = \App\Car::find($expense->car_id);

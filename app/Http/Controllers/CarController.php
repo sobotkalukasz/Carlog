@@ -13,7 +13,7 @@ class CarController extends Controller
 
   public function View () {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
       if (session()->has('car_id')){
         session()->forget('car_id');
       }
@@ -26,7 +26,7 @@ class CarController extends Controller
 
   public function Edit ($car_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
       $car = \App\Car::find($car_id);
       if($car->user_id == session('id')){
         return Redirect::to('/EditCarView')->with('car_id', $car_id);
@@ -53,7 +53,7 @@ class CarController extends Controller
 
   public function Info ($car_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
       $car = \App\Car::find($car_id);
       if($car->user_id == session('id')){
         return Redirect::to('/InfoCarView')->with('car_id', $car_id);
@@ -215,7 +215,7 @@ class CarController extends Controller
 
   public function Delete($car_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
       $car = \App\Car::find($car_id);
       if($car->user_id == session('id')){
         \App\Car::destroy($car_id);

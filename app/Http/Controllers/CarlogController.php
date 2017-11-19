@@ -12,10 +12,10 @@ class CarlogController extends Controller
 
     public function home () {
 
-      if (Session::has('id', 'name', 'email')){
+      if (Session::has('id')){
         $cars = \App\Car::whereUser_id(session('id'))->get();
         $size = sizeof($cars);
-  
+
         return view('home', compact('cars', 'size'));
       }
 
@@ -25,7 +25,7 @@ class CarlogController extends Controller
 
     public function logout () {
 
-      if (Session::has('id', 'name', 'email')){
+      if (Session::has('id')){
         Session::flush();
       }
 

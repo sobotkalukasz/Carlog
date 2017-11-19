@@ -12,7 +12,7 @@ class ServiceController extends Controller
 
   public function View () {
 
-    if (Session::has('id', 'name', 'email'))
+    if (Session::has('id'))
       if(\App\User::hasActiveCars(session('id')))
         $cars = \App\Car::whereUser_id(session('id'))->get();
         return view('service', ['cars' => $cars]);
@@ -23,7 +23,7 @@ class ServiceController extends Controller
 
   public function Edit ($service_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
       $service = \App\Service::find($service_id);
       $car = \App\Car::find($service->car_id);
@@ -44,7 +44,7 @@ class ServiceController extends Controller
       $cars = \App\Car::whereUser_id(session('id'))->get();
       $service = \App\Service::find(session('service_id'));
       session()->forget('service_id');
-    
+
       return view('service', compact('cars', 'service'));
     }
 
@@ -167,7 +167,7 @@ class ServiceController extends Controller
 
   public function Delete($service_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
       $service = \App\Service::find($service_id);
       $car = \App\Car::find($service->car_id);

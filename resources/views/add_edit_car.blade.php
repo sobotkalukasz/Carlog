@@ -278,7 +278,7 @@
 
 
 
-    @if(session()->has('car_id'))
+    @if(isset($car))
 
         <h1>sprzedaż pojazdu</h1>
 
@@ -291,7 +291,7 @@
           {{-- If editing existing fuel entry it creates hidden input field with it id --}}
 
 
-          @if(session()->has('car_id'))
+          @if(isset($car))
             <input type="hidden" name="car_id" value="{{ session('car_id') }}">
           @endif
 
@@ -305,8 +305,8 @@
                       @if (session()->has('sale_date'))
                           value="{{ session('sale_date') }}"
                           @php Session::forget('sale_date') @endphp
-                      @elseif (session()->has('car_id') && $car[0]->sale_date)
-                          value="{{ $car[0]->sale_date }}"
+                      @elseif (isset($car) && $car->sale_date)
+                          value="{{ $car->sale_date }}"
                       @endif >
                   </div>
 
@@ -316,8 +316,8 @@
                           @if (session()->has('sale_price'))
                               value="{{ session('sale_price') }}"
                               @php Session::forget('sale_price') @endphp
-                          @elseif (session()->has('car_id') && $car[0]->sale_price)
-                              value="{{ $car[0]->sale_price }}"
+                          @elseif (isset($car) && $car->sale_price)
+                              value="{{ $car->sale_price }}"
                           @endif >
                   </div>
 
@@ -345,8 +345,8 @@
                     @if (session()->has('mileage_current2'))
                         value="{{ session('mileage_current2') }}"
                         @php Session::forget('mileage_current2') @endphp
-                    @elseif (session()->has('car_id') && $car[0]->sale_date != NULL)
-                            value="{{ $car[0]->mileage_current }}"
+                    @elseif (isset($car) && $car->sale_date != NULL)
+                            value="{{ $car->mileage_current }}"
                     @endif >
             </div>
 
@@ -361,7 +361,7 @@
 
             <div class="submitdiv">
                 <input type="submit" class="submit"
-                    @if($car[0]->sale_price)
+                    @if($car->sale_price)
                       value="zapisz zmiany"
                     @else
                       value="potwietdź sprzedaż"
@@ -371,9 +371,6 @@
 
             {{-- Deletes car_id from session() --}}
 
-            @if(session()->has('car_id'))
-              @php session()->forget('car_id') @endphp
-            @endif
 
             <div style="clear:both;"></div>
 

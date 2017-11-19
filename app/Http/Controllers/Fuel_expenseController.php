@@ -12,7 +12,7 @@ class Fuel_expenseController extends Controller
 
   public function View () {
 
-    if (Session::has('id', 'name', 'email'))
+    if (Session::has('id'))
       if(\App\User::hasActiveCars(session('id'))){
         $cars = \App\Car::whereUser_id(session('id'))->get();
         return view('fuel', ['cars' => $cars]);
@@ -24,7 +24,7 @@ class Fuel_expenseController extends Controller
 
   public function Edit ($fuel_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
       $fuel = \App\Fuel_expense::find($fuel_id);
       $car = \App\Car::find($fuel->car_id);
@@ -116,7 +116,7 @@ class Fuel_expenseController extends Controller
 
   public function Delete($fuel_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
       $fuel = \App\Fuel_expense::find($fuel_id);
       $car = \App\Car::find($fuel->car_id);

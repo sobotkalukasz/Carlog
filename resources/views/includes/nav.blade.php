@@ -1,6 +1,6 @@
 @php
   if (session()->has('id')){
-    $cars = \App\Car::menuCars(session('id'))->get();
+    $cars = \App\Car::whereUser_id(session('id'))->get();
     $size = sizeof($cars);
   }
 @endphp

@@ -44,8 +44,6 @@ class UserController extends Controller
           if($user = $user->login($formData)){
 
             Session::put('id', $user[0]['id']);
-            Session::put('name', $user[0]['name']);
-            Session::put('email', $user[0]['email']);
 
             //it destroys $formData and $user object
             unset($formData, $user);
@@ -126,12 +124,7 @@ class UserController extends Controller
           //$user = new \App\User;
           if($user = $user->login($formData)){
 
-            $message = 'Witaj nowy użytkowniku w moim serwisie.';
-
             Session::put('id', $user[0]['id']);
-            Session::put('name', $user[0]['name']);
-            Session::put('email', $user[0]['email']);
-            Session::put('message_for_user', $message);
 
             //it destroys $user object
             unset($user);

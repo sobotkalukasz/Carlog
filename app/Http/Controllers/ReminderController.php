@@ -12,7 +12,7 @@ class ReminderController extends Controller
 
   public function View () {
 
-    if (Session::has('id', 'name', 'email'))
+    if (Session::has('id'))
       if(\App\User::hasActiveCars(session('id'))){
         $cars = \App\Car::whereUser_id(session('id'))->get();
         return view('reminder', ['cars' => $cars]);
@@ -24,7 +24,7 @@ class ReminderController extends Controller
 
   public function Edit ($reminder_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
       $reminder = \App\Reminder::find($reminder_id);
       $car = \App\Car::find($reminder->car_id);
@@ -112,7 +112,7 @@ class ReminderController extends Controller
 
   public function Delete($reminder_id) {
 
-    if (Session::has('id', 'name', 'email')){
+    if (Session::has('id')){
 
         $reminder = \App\Reminder::find($reminder_id);
         $car = \App\Car::find($reminder->car_id);
